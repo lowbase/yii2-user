@@ -32,6 +32,28 @@ class m160306_230816_user extends Migration
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
         }
 
+        //Таблица страны country
+        $this->createTable('{{%lb_country}}', [
+            'id' => Schema::TYPE_PK,
+            'name' => Schema::TYPE_STRING.'(255) NOT NULL',
+            'currency_code' => Schema::TYPE_STRING.'(5) NOT NULL',
+            'currency' => Schema::TYPE_STRING.' NULL DEFAULT NULL'
+        ], $tableOptions);
+
+        //Таблица города city
+        $this->createTable('{{%lb_city}}', [
+            'id' => Schema::TYPE_PK,
+            'country_id' => Schema::TYPE_INTEGER.'(11) NOT NULL',
+            'city' => Schema::TYPE_STRING.'(255) NOT NULL',
+            'state' => Schema::TYPE_STRING.'(255) NULL DEFAULT NULL',
+            'region' => Schema::TYPE_STRING.'(255) NOT NULL',
+            'biggest_city' => Schema::TYPE_SMALLINT.' NOT NULL DEFAULT 0',
+        ], $tableOptions);
+
+        //Ключи и индексы
+        $this->addForeignKey('city_country_id_fk', '{{%lb_city}}', 'country_id', '{{%lb_country}}', 'id', 'CASCADE', 'CASCADE');
+        $this->createIndex('city_city_index', '{{%lb_city}}', 'city');
+
         //Таблица пользователей user
         $this->createTable('{{%lb_user}}', [
             'id' => Schema::TYPE_PK,
@@ -46,7 +68,7 @@ class m160306_230816_user extends Migration
             'sex' => Schema::TYPE_SMALLINT.' NULL DEFAULT NULL',
             'birthday' => Schema::TYPE_DATE . ' NULL DEFAULT NULL',
             'phone' => Schema::TYPE_STRING . '(100) NULL DEFAULT NULL',
-            'country_id' => Schema::TYPE_SMALLINT . ' NULL DEFAULT NULL',
+            'country_id' => Schema::TYPE_INTEGER . ' NULL DEFAULT NULL',
             'city_id' => Schema::TYPE_INTEGER . ' NULL DEFAULT NULL',
             'address' => Schema::TYPE_STRING . ' NULL DEFAULT NULL',
             'status' => Schema::TYPE_SMALLINT.' NOT NULL DEFAULT ' . User::STATUS_WAIT,
@@ -65,7 +87,7 @@ class m160306_230816_user extends Migration
         $this->createIndex('user_status_index', '{{%lb_user}}', 'status');
 
         //Предустановленные значения таблицы пользователей user
-        $this->batchInsert('user', [
+        $this->batchInsert('lb_user', [
             'id',
             'first_name',
             'last_name',
@@ -129,9 +151,9 @@ class m160306_230816_user extends Migration
         $this->addPrimaryKey('auth_rule_pk', '{{%lb_auth_rule}}', 'name');
 
         //Предустановленные значения таблицы правил auth_rule
-        $this->insert('auth_rule', [
+        $this->insert('lb_auth_rule', [
             'name' => 'noElderRank',
-            'data' => 'O:33:"app\modules\user\rules\AuthorRule":3:{s:4:"name";s:10:"AuthorRule";s:9:"createdAt";N;s:9:"updatedAt";N;}',
+            'data' => 'O:29:"lowbase\user\rules\AuthorRule":3:{s:4:"name";s:10:"AuthorRule";s:9:"createdAt";N;s:9:"updatedAt";N;}',
             'created_at' => time(),
             'updated_at' => time(),
         ]);
@@ -153,7 +175,7 @@ class m160306_230816_user extends Migration
         $this->createIndex('auth_item_type_index', '{{%lb_auth_item}}', 'type');
 
         //Предустановленные значения таблицы ролей и допусков auth_item
-        $this->batchInsert('auth_item', ['name', 'type', 'description', 'rule_name', 'created_at', 'updated_at'], [
+        $this->batchInsert('lb_auth_item', ['name', 'type', 'description', 'rule_name', 'created_at', 'updated_at'], [
             ['administrator', AuthItem::TYPE_ROLE, 'Администратор', NULL, time(), time()],
             ['moderator', AuthItem::TYPE_ROLE, 'Модератор', NULL, time(), time()],
             ['userUpdate', AuthItem::TYPE_PERMISSION, 'Редактирование пользователя', NULL, time(), time()],
@@ -193,7 +215,7 @@ class m160306_230816_user extends Migration
         $this->addForeignKey('auth_item_child_child_fk', '{{%lb_auth_item_child}}', 'child', '{{%lb_auth_item}}', 'name', 'CASCADE', 'CASCADE');
 
         //Предустановленные значения таблицы разрешений auth_item_child
-        $this->batchInsert('auth_item_child', ['parent', 'child'], [
+        $this->batchInsert('lb_auth_item_child', ['parent', 'child'], [
             ['moderator', 'userManager'],
             ['moderator', 'userView'],
             ['moderator', 'roleManager'],
@@ -211,13 +233,13 @@ class m160306_230816_user extends Migration
             ['administrator', 'ruleCreate'],
             ['administrator', 'ruleDelete'],
             ['administrator', 'ruleView'],
-            ['administrator', 'ruleIndex'],
+            ['administrator', 'ruleManager'],
             ['administrator', 'countryCreate'],
             ['administrator', 'countryUpdate'],
             ['administrator', 'countryDelete'],
             ['administrator', 'cityCreate'],
             ['administrator', 'cityUpdate'],
-            ['administrator', 'citycdDelete'],
+            ['administrator', 'cityDelete'],
         ]);
 
         //Таблица связи ролей auth_assignment
@@ -234,43 +256,21 @@ class m160306_230816_user extends Migration
         $this->addForeignKey('auth_assignment_user_id_fk', '{{%lb_auth_assignment}}', 'user_id', '{{%lb_user}}', 'id', 'CASCADE', 'CASCADE');
 
         //Предустановленные значения таблицы связи ролей auth_assignment
-        $this->batchInsert('auth_assignment', ['item_name', 'user_id', 'created_at', 'updated_at'], [
+        $this->batchInsert('lb_auth_assignment', ['item_name', 'user_id', 'created_at', 'updated_at'], [
             ['administrator', 1, time(), time()],
             ['moderator', 2, time(), time()],
         ]);
-
-        //Таблица страны country
-        $this->createTable('{{%lb_country}}', [
-            'id' => Schema::TYPE_PK,
-            'name' => Schema::TYPE_STRING.'(255) NOT NULL',
-            'currency_code' => Schema::TYPE_STRING.'(5) NOT NULL',
-            'currency' => Schema::TYPE_STRING.' NULL DEFAULT NULL'
-        ], $tableOptions);
-
-        //Таблица города city
-        $this->createTable('{{%lb_city}}', [
-            'id' => Schema::TYPE_PK,
-            'country_id' => Schema::TYPE_INTEGER.'(11) NOT NULL',
-            'city' => Schema::TYPE_STRING.'(255) NOT NULL',
-            'state' => Schema::TYPE_STRING.'(255) NULL DEFAULT NULL',
-            'region' => Schema::TYPE_STRING.'(255) NOT NULL',
-            'biggest_city' => Schema::TYPE_SMALLINT.' NOT NULL DEFAULT 0',
-        ], $tableOptions);
-
-        //Ключи и индексы
-        $this->addForeignKey('city_country_id_fk', '{{%lb_city}}', 'country_id', '{{%lb_country}}', 'id', 'CASCADE', 'CASCADE');
-        $this->createIndex('city_city_index', '{{%lb_city}}', 'city');
     }
 
     public function down()
     {
-        $this->dropTable('{{%lb_city}}');
-        $this->dropTable('{{%lb_country}}');
         $this->dropTable('{{%lb_auth_assignment}}');
         $this->dropTable('{{%lb_auth_item_child}}');
         $this->dropTable('{{%lb_auth_item}}');
         $this->dropTable('{{%lb_auth_rule}}');
         $this->dropTable('{{%lb_user_oauth_key}}');
         $this->dropTable('{{%lb_user}}');
+        $this->dropTable('{{%lb_city}}');
+        $this->dropTable('{{%lb_country}}');
     }
 }
