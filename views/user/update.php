@@ -14,7 +14,7 @@ use kartik\widgets\DatePicker;
 use kartik\widgets\Select2;
 use yii\web\JsExpression;
 use yii\helpers\Url;
-use app\modules\user\UserAsset;
+use lowbase\user\UserAsset;
 
 /* @var $this yii\web\View */
 /* @var $model lowbase\user\models\User */
