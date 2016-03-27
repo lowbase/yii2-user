@@ -99,7 +99,11 @@ php composer.phar require --prefer-dist lowbase/yii2-user "*"
 //---------------------------------------------
 
 'authManager' => [
-   'class' => 'yii\rbac\DbManager',
+    'class' => 'yii\rbac\DbManager',
+    'itemTable' => 'lb_auth_item',
+    'itemChildTable' => 'lb_auth_item_child',
+    'assignmentTable' => 'lb_auth_assignment',
+    'ruleTable' => 'lb_auth_rule'
 ],
 
 //-------------------------------------------------
