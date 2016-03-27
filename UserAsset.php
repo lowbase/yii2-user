@@ -13,7 +13,7 @@ use yii\web\AssetBundle;
 /**
  * Widget asset bundle
  */
-class UsersAsset extends AssetBundle
+class UserAsset extends AssetBundle
 {
 	/**
 	 * @inheritdoc
