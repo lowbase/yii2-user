@@ -149,7 +149,7 @@ php composer.phar require --prefer-dist lowbase/yii2-user "*"
 ------------------
 Запускаем миграции командой:
 ```
-yii migrate/up --migrationPath=@vendor/lowbase/yii2-users/migrations
+yii migrate/up --migrationPath=@vendor/lowbase/yii2-user/migrations
 ```
 Миграции создают необходимые таблицы и заполняют их предустановленными значениями
 по минимуму. Изначально установлены 2 роли: Администратор и модератор. Если хотите
