@@ -174,7 +174,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getItemNames()
     {
-        return $this->hasMany(AuthItem::className(), ['name' => 'item_name'])->viaTable('auth_assignment', ['user_id' => 'id']);
+        return $this->hasMany(AuthItem::className(), ['name' => 'item_name'])->viaTable('lb_auth_assignment', ['user_id' => 'id']);
     }
 
     /**
