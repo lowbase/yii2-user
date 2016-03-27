@@ -17,7 +17,7 @@
     "kartik-v/yii2-mpdf":"*",
     "kartik-v/yii2-widgets":"*",
     "kartik-v/yii2-grid":"*"
-  }
+  },
   "autoload": {
     "psr-4": {
         "lowbase\\user\\": ""
