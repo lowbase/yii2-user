@@ -33,11 +33,11 @@ php composer.phar require --prefer-dist lowbase/yii2-user "*"
 //-----------------------
 
 'user' => [
-    'identityClass' => 'app\modules\user\models\User',
+    'identityClass' => 'lowbase\user\models\User',
     'enableAutoLogin' => true,
     'loginUrl' => ['/login'],
     'on afterLogin' => function($event) {
-        app\modules\user\models\User::afterLogin($event->identity->id);
+        lowbase\user\models\User::afterLogin($event->identity->id);
     }
 ],
 
@@ -54,39 +54,39 @@ php composer.phar require --prefer-dist lowbase/yii2-user "*"
    'clients' => [
        'vkontakte' => [
            // https://vk.com/editapp?act=create
-           'class' => 'app\modules\user\components\oauth\VKontakte',
+           'class' => 'lowbase\user\components\oauth\VKontakte',
            'clientId' => '?',
            'clientSecret' => '?',
            'scope' => 'email'
        ],
        'google' => [
            // https://console.developers.google.com/project
-           'class' => 'app\modules\user\components\oauth\Google',
+           'class' => 'lowbase\user\components\oauth\Google',
            'clientId' => '?',
            'clientSecret' => '?',
        ],
        'twitter' => [
             // https://dev.twitter.com/apps/new
-           'class' => 'app\modules\user\components\oauth\Twitter',
+           'class' => 'lowbase\user\components\oauth\Twitter',
            'consumerKey' => '?',
            'consumerSecret' => '?',
        ],
        'facebook' => [
             // https://developers.facebook.com/apps
-           'class' => 'app\modules\user\components\oauth\Facebook',
+           'class' => 'lowbase\user\components\oauth\Facebook',
            'clientId' => '?',
            'clientSecret' => '?',
        ],
        'github' => [
             // https://github.com/settings/applications/new
-           'class' => 'app\modules\user\components\oauth\GitHub',
+           'class' => 'lowbase\user\components\oauth\GitHub',
            'clientId' => '?',
            'clientSecret' => '?',
            'scope' => 'user:email, user'
        ],
        'yandex' => [
             // https://oauth.yandex.ru/client/new
-           'class' => 'app\modules\user\components\oauth\Yandex',
+           'class' => 'lowbase\user\components\oauth\Yandex',
            'clientId' => '?',
            'clientSecret' => '?',
        ],
@@ -141,7 +141,7 @@ php composer.phar require --prefer-dist lowbase/yii2-user "*"
        'class' => '\kartik\grid\Module'
    ],
    'user' => [
-       'class' => '\app\modules\user\Module',
+       'class' => '\lowbase\user\Module',
    ],
 ],
 ```
@@ -178,7 +178,7 @@ dump_city.sql
 ```
 'modules' => [
     'user' => [
-        'class' => '\app\modules\user\Module',
+        'class' => '\lowbase\user\Module',
         'customViews' => [
             // Меняем стандартное отображение профиля
             'login' => '@app/views/user/profile'
