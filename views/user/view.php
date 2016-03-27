@@ -10,7 +10,7 @@ use lowbase\user\models\User;
 use lowbase\user\models\UserOauthKey;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-use app\modules\user\UserAsset;
+use lowbase\user\UserAsset;
 use yii\authclient\widgets\AuthChoiceStyleAsset;
 
 /* @var $this yii\web\View */
