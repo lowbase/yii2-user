@@ -1,0 +1,21 @@
+{
+  "name": "lowbase/yii2-user",
+  "description": "Yii2 user module",
+  "type": "yii2-extension",
+  "keywords": ["yii2","extension","user","module"],
+  "license": "BSD-3-Clause",
+  "authors": [
+    {
+      "name": "Yuri Shekhovtsov",
+      "email": "shekhovtsovy@yandex.ru"
+    }
+  ],
+  "require": {
+    "yiisoft/yii2": "*",
+    "yiisoft/yii2-authclient": "*",
+    "yiisoft/yii2-imagine": "*",
+    "kartik-v/yii2-mpdf":"*",
+    "kartik-v/yii2-widgets":"*",
+    "kartik-v/yii2-grid":"*"
+  }
+}
