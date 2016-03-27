@@ -364,7 +364,7 @@ class User extends ActiveRecord implements IdentityInterface
     public static function afterLogin($id)
     {
         $db = self::getDb();
-        $db->createCommand()->update('user', ['ip' => $_SERVER["REMOTE_ADDR"], 'login_at' => date('Y-m-d H:i:s')], ['id' => $id])->execute();
+        $db->createCommand()->update('lb_user', ['ip' => $_SERVER["REMOTE_ADDR"], 'login_at' => date('Y-m-d H:i:s')], ['id' => $id])->execute();
         return true;
     }
 
@@ -395,7 +395,7 @@ class User extends ActiveRecord implements IdentityInterface
             }
             $this->image = $full_name;
             $db = User::getDb();
-            $db->createCommand()->update('user', ['image' => $full_name], ['id' => $this->id])->execute();
+            $db->createCommand()->update('lb_user', ['image' => $full_name], ['id' => $this->id])->execute();
         }
         return true;
     }
@@ -413,7 +413,7 @@ class User extends ActiveRecord implements IdentityInterface
             }
             if (!$this->isNewRecord) {
                 $db = User::getDb();
-                $db->createCommand()->update('user', ['image' => null], ['id' => $this->id])->execute();
+                $db->createCommand()->update('lb_user', ['image' => null], ['id' => $this->id])->execute();
             }
         }
         return true;
