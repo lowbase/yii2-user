@@ -6,7 +6,7 @@
 /* @var $forget \frontend\models\PasswordResetForm */
 
 use yii\helpers\Html;
-use app\modules\user\components\AuthChoice;
+use lowbase\user\components\AuthChoice;
 use yii\captcha\Captcha;
 use yii\widgets\ActiveForm;
 
