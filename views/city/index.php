@@ -43,8 +43,8 @@ $assets = UserAsset::register($this);
         ],
         [
             'attribute' => 'country_id',
-            'value' => function($model) {
-              return ($model->country_id && isset($model->country)) ? $model->country->name : null;
+            'value' => function ($model) {
+                return ($model->country_id && isset($model->country)) ? $model->country->name : null;
             },
             'filter' => Country::getAll(),
             'filterType' => GridView::FILTER_SELECT2,
