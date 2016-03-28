@@ -2,8 +2,6 @@
 
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
-/* @var $model \frontend\models\RegForm */
-/* @var $forget \frontend\models\PasswordResetForm */
 
 use yii\helpers\Html;
 use lowbase\user\components\AuthChoice;
@@ -81,7 +79,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
 
             <p class="hint-block">
-                <?= Yii::t('user', 'Если регистрировались ранее, можете')?> <?=Html::a(Yii::t('user','войти на сайт'), ['login'])?>,
+                <?= Yii::t('user', 'Если регистрировались ранее, можете')?> <?=Html::a(Yii::t('user', 'войти на сайт'), ['login'])?>,
                 <?= Yii::t('user', 'используя Email или социальные сети')?>.
             </p>
 
