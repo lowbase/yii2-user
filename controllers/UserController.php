@@ -17,6 +17,8 @@ use lowbase\user\models\User;
 use lowbase\user\models\forms\LoginForm;
 use lowbase\user\models\EmailConfirm;
 use lowbase\user\models\ResetPassword;
+use yii\base\InvalidParamException;
+use yii\web\BadRequestHttpException;
 use yii\web\UploadedFile;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -90,7 +92,7 @@ class UserController extends Controller
             return $this->goBack(['signup']);
         }
 
-        return $this->render($this->module->getCustomView('signup','signup'), [
+        return $this->render($this->module->getCustomView('signup', 'signup'), [
             'model' => $model,
         ]);
     }
@@ -185,6 +187,7 @@ class UserController extends Controller
      */
     public function actionProfile()
     {
+        /** @var \lowbase\user\models\forms\ProfileForm $model */
         $model = ProfileForm::findOne(Yii::$app->user->id);
         if ($model === null) {
             throw new NotFoundHttpException(Yii::t('user', 'Запрошенная страница не найдена.'));
@@ -228,6 +231,7 @@ class UserController extends Controller
      */
     public function actionRemove()
     {
+        /** @var \lowbase\user\models\forms\ProfileForm $model */
         $model = ProfileForm::findOne(Yii::$app->user->id);
         if ($model !== null) {
             $model->removeImage();
@@ -279,6 +283,7 @@ class UserController extends Controller
      */
     public function actionUpdate($id)
     {
+        /** @var \lowbase\user\models\forms\ProfileForm $model */
         $model = ProfileForm::findOne($id);
         if ($model === null) {
             throw new NotFoundHttpException(Yii::t('user', 'Запрошенная страница не найдена.'));
@@ -321,6 +326,7 @@ class UserController extends Controller
      */
     public function actionRmv($id)
     {
+        /** @var \lowbase\user\models\forms\ProfileForm $model */
         $model = ProfileForm::findOne($id);
         if ($model !== null) {
             $model->removeImage();
@@ -341,6 +347,7 @@ class UserController extends Controller
         if ($models) {
             foreach ($models as $id) {
                 if ($id != Yii::$app->user->id) {
+                    /** @var \lowbase\user\models\User $model */
                     $model = $this->findModel($id);
                     $model->status = 1;
                     $model->save();
@@ -362,6 +369,7 @@ class UserController extends Controller
         if ($models) {
             foreach ($models as $id) {
                 if ($id != Yii::$app->user->id) {
+                    /** @var \lowbase\user\models\User $model */
                     $model = $this->findModel($id);
                     $model->status = 0;
                     $model->save();
@@ -379,10 +387,12 @@ class UserController extends Controller
      */
     public function actionMultidelete()
     {
+        /** @var \lowbase\user\models\User $models */
         $models = Yii::$app->request->post('keys');
         if ($models) {
             foreach ($models as $id) {
                 if ($id != Yii::$app->user->id) {
+                    /** @var \lowbase\user\models\User $user */
                     $user = $this->findModel($id);
                     $user->removeImage();
                     $user->delete();
