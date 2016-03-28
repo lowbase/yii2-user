@@ -88,8 +88,7 @@ class CityController extends Controller
                         $d['region'] . ")"];
             }
             $out['results'] = array_values($format_data);
-        }
-        elseif ($id > 0) {
+        } elseif ($id > 0) {
             $out['results'] = ['id' => $id, 'text' => City::find($id)->city];
         }
         return $out;
