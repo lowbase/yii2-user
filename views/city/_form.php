@@ -68,7 +68,7 @@ use lowbase\user\models\Country;
             <?= $form->field($model, 'region')->textInput(['maxlength' => true]) ?>
         </div>
         <div class="col-lg-6">
-            <?= $form->field($model, 'biggest_city')->dropDownList([ 0 => Yii::t('user','Нет'), 1 => Yii::t('user','Да')]) ?>
+            <?= $form->field($model, 'biggest_city')->dropDownList([0 => Yii::t('user', 'Нет'), 1 => Yii::t('user', 'Да')]) ?>
         </div>
     </div>
 
