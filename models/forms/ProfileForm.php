@@ -86,7 +86,7 @@ class ProfileForm extends User
      * @param $attribute
      * @param $params
      */
-    public function passwordValidate($attribute, $params)
+    public function passwordValidate()
     {
         if ($this->password_hash === null && !$this->password && !UserOauthKey::isOAuth($this->id)) {
             $this->addError('password', Yii::t('user', 'Необходимо указать пароль.'));
@@ -97,7 +97,7 @@ class ProfileForm extends User
      * @param $attribute
      * @param $params
      */
-    public function emailValidate($attribute, $params)
+    public function emailValidate()
     {
         if (!$this->email && !UserOauthKey::isOAuth($this->id)) {
             $this->addError('email', Yii::t('user', 'Необходимо указать Email.'));
