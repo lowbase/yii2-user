@@ -44,13 +44,13 @@ $assets = UserAsset::register($this);
             'format' => 'raw',
             'value' => function ($model) {
                 switch ($model->type) {
-                    case 1;
+                    case 1:
                         return '<span class="label label-primary">'. AuthItem::getTypes()[$model->type].'</span>';
                         break;
                     case 2:
                         return '<span class="label label-success">'. AuthItem::getTypes()[$model->type].'</span>';
                         break;
-                    }
+                }
                 return false;
             },
             'filter' => AuthItem::getTypes()
