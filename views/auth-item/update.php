@@ -10,7 +10,7 @@ use yii\helpers\Html;
 use lowbase\user\UserAsset;
 
 /* @var $this yii\web\View */
-/* @var $model app\modules\user\models\AuthItem */
+/* @var $model lowbase\user\models\AuthItem */
 
 $this->title = Yii::t('user', 'Редактирование'). ' '.(($model->type === 1) ? Yii::t('user', 'роли'): Yii::t('user', 'допуска'));
 $this->params['breadcrumbs'][] = ['label' => Yii::t('user', 'Роли и допуски'), 'url' => ['index']];
