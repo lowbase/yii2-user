@@ -15,19 +15,13 @@ use yii\web\AssetBundle;
  */
 class UserAsset extends AssetBundle
 {
-	/**
-	 * @inheritdoc
-	 */
-	public $sourcePath = '@lowbase/user/assets';
+    public $sourcePath = '@lowbase/user/assets';
 
     public $css = [
         'css/lb-user-module.css'
     ];
 
-	/**
-	 * @inheritdoc
-	 */
-	public $depends = [
-		'yii\web\JqueryAsset'
-	];
+    public $depends = [
+        'yii\web\JqueryAsset'
+    ];
 }
