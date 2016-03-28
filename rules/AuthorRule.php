@@ -10,6 +10,11 @@ namespace lowbase\user\rules;
 
 use yii\rbac\Rule;
 
+/**
+ * Class AuthorRule
+ * Проверка на авторство
+ * @package lowbase\user\rules
+ */
 class AuthorRule extends Rule
 {
     public $name = 'AuthorRule';
