@@ -103,8 +103,7 @@ $this->params['breadcrumbs'][] = Yii::t('user', 'Редактирование');
                                 'autoclose'=>true,
                                 'format' => 'dd.mm.yyyy'
                             ]
-                        ]
-                    ) ?>
+                        ]); ?>
             </div>
         </div>
 
