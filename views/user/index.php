@@ -14,7 +14,7 @@ use yii\helpers\Url;
 use lowbase\user\UserAsset;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\modules\user\models\UserSearch */
+/* @var $searchModel lowbase\user\models\UserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = Yii::t('user', 'Менеджер пользователей');
@@ -66,20 +66,20 @@ UserAsset::register($this);
             'vAlign' => 'middle',
             'format' => 'raw',
             'value' => function ($model) {
-                    switch ($model->status) {
-                        case User::STATUS_BLOCKED:
-                            return '<span class="label label-danger">
-                                <i class="glyphicon glyphicon-lock"></i> '.User::getStatusArray()[User::STATUS_BLOCKED].'</span>';
-                            break;
-                        case User::STATUS_WAIT:
-                            return '<span class="label label-warning">
-                                <i class="glyphicon glyphicon-hourglass"></i> '.User::getStatusArray()[User::STATUS_WAIT].'</span>';
-                            break;
-                        case User::STATUS_ACTIVE:
-                            return '<span class="label label-success">
-                                <i class="glyphicon glyphicon-ok"></i> '.User::getStatusArray()[User::STATUS_ACTIVE].'</span>';
-                            break;
-                    }
+                switch ($model->status) {
+                    case User::STATUS_BLOCKED:
+                        return '<span class="label label-danger">
+                            <i class="glyphicon glyphicon-lock"></i> '.User::getStatusArray()[User::STATUS_BLOCKED].'</span>';
+                        break;
+                    case User::STATUS_WAIT:
+                        return '<span class="label label-warning">
+                            <i class="glyphicon glyphicon-hourglass"></i> '.User::getStatusArray()[User::STATUS_WAIT].'</span>';
+                        break;
+                    case User::STATUS_ACTIVE:
+                        return '<span class="label label-success">
+                            <i class="glyphicon glyphicon-ok"></i> '.User::getStatusArray()[User::STATUS_ACTIVE].'</span>';
+                        break;
+                }
                 return false;
             },
             'filter' => User::getStatusArray(),
