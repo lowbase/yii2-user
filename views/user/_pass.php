@@ -12,7 +12,7 @@ use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
 
 Modal::begin([
-    'header' => '<h1 class="text-center">'.Yii::t('user','Восстановление пароля').'</h1>',
+    'header' => '<h1 class="text-center">' . Yii::t('user', 'Восстановление пароля') . '</h1>',
     'toggleButton' => false,
     'id' => 'pass'
 ]);
@@ -50,21 +50,19 @@ echo $this->render(Yii::$app->controller->module->getCustomView('alert', '../def
     ?>
 
     <p class="hint-block">
-        <?= Yii::t('user','Ссылка с активацией нового пароля будет отправлена на Email, указанный при регистрации')?>.
+        <?= Yii::t('user', 'Ссылка с активацией нового пароля будет отправлена на Email, указанный при регистрации')?>.
     </p>
 
     <div class="form-group text-center">
-        <?= Html::submitButton('<i class="glyphicon glyphicon-refresh"></i> '.Yii::t('user','Сбросить пароль'), [
+        <?= Html::submitButton('<i class="glyphicon glyphicon-refresh"></i> '.Yii::t('user', 'Сбросить пароль'), [
             'class' => 'text-center btn btn-lg btn-primary',
             'name' => 'pass-button'
         ]);
         ?>
     </div>
 
-    <?php
-
+<?php
     ActiveForm::end();
-
 Modal::end();
 
 if (Yii::$app->session->hasFlash('success')|| $model->hasErrors()) {
