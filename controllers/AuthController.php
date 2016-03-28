@@ -54,6 +54,7 @@ class AuthController extends Controller
 
         $this->action->successUrl = Yii::$app->session->get('returnUrl');
 
+        /** @var \lowbase\user\models\UserOauthKey $key */
         $key = UserOauthKey::findOne([
             'provider_id' => $attributes['provider_id'],
             'provider_user_id' => $attributes['provider_user_id']
@@ -97,6 +98,7 @@ class AuthController extends Controller
                 return true;
             }
         }
+        return true;
     }
 
     /**
@@ -122,10 +124,12 @@ class AuthController extends Controller
      */
     public function actionUnbind($id)
     {
+        /** @var \lowbase\user\models\UserOauthKey $key */
         $key = UserOauthKey::findOne(['user_id' => Yii::$app->user->id, 'provider_id' => UserOauthKey::getAvailableClients()[$id]]);
         if (!$key) {
             Yii::$app->session->setFlash('error', Yii::t('user', 'Ключ не найден'));
         } else {
+            /** @var \lowbase\user\models\User $user */
             $user = User::findOne($key->user_id);
             if ($user) {
                 if (UserOauthKey::isOAuth($user->id)<=1 && $user->email === null) {
