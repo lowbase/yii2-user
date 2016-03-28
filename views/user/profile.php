@@ -17,7 +17,7 @@ use kartik\widgets\Select2;
 use yii\web\JsExpression;
 use lowbase\user\UserAsset;
 
-$this->title = Yii::t('user','Мой профиль');
+$this->title = Yii::t('user', 'Мой профиль');
 $this->params['breadcrumbs'][] = $this->title;
 $assets = UserAsset::register($this);
 ?>
@@ -70,8 +70,7 @@ $assets = UserAsset::register($this);
                     'autoclose'=>true,
                     'format' => 'dd.mm.yyyy'
                 ]
-                ]
-        ) ?>
+                ]); ?>
 
         <?= $form->field($model, 'country_id')->widget(Select2::classname(), [
             'data' => Country::getAll(),
