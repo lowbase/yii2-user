@@ -12,13 +12,13 @@ use yii\helpers\Html;
 use lowbase\user\components\AuthChoice;
 use yii\widgets\ActiveForm;
 
-$this->title = Yii::t('user','Вход на сайт');
+$this->title = Yii::t('user', 'Вход на сайт');
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
 <div class="site-login row" id="filter">
 
-    <?= $this->render(Yii::$app->controller->module->getCustomView('repass','_pass'), ['model' => $forget]); ?>
+    <?= $this->render(Yii::$app->controller->module->getCustomView('repass', '_pass'), ['model' => $forget]); ?>
 
     <div class="col-lg-6">
 
@@ -44,23 +44,23 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= $form->field($model, 'rememberMe')->checkbox() ?>
 
         <p class="hint-block">
-            <?=Yii::t('user','Если')?> <?=Html::a(Yii::t('user','регистрировались'), ['signup'])?>
-            <?=Yii::t('user','ранее, но забыли пароль, нажмите')?>
-            <?=Html::a(Yii::t('user','восстановить пароль'), ['#'], [
+            <?=Yii::t('user', 'Если')?> <?=Html::a(Yii::t('user', 'регистрировались'), ['signup'])?>
+            <?=Yii::t('user', 'ранее, но забыли пароль, нажмите')?>
+            <?=Html::a(Yii::t('user', 'восстановить пароль'), ['#'], [
                 'data-toggle' => 'modal',
                 'data-target' => '#pass',
             ])?>.
         </p>
 
         <div class="form-group">
-            <?= Html::submitButton('<i class="glyphicon glyphicon-log-in"></i> '.Yii::t('user','Войти'), [
+            <?= Html::submitButton('<i class="glyphicon glyphicon-log-in"></i> '.Yii::t('user', 'Войти'), [
                 'class' => 'btn btn-lg btn-primary',
                 'name' => 'login-button']) ?>
         </div>
 
         <?php ActiveForm::end(); ?>
 
-        <p class="hint-block"><?=Yii::t('user','Войти с помощью социальных сетей')?>:</p>
+        <p class="hint-block"><?=Yii::t('user', 'Войти с помощью социальных сетей')?>:</p>
 
         <div class="text-center" style="text-align: center">
             <?= AuthChoice::widget([
@@ -71,4 +71,3 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="col-lg-6">
     </div>
 </div>
-
