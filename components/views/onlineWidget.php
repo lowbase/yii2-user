@@ -8,9 +8,11 @@
 
 use yii\helpers\Url;
 
-$this->registerJs('
-    setInterval(function() {
-       $.ajax({
+/* @var $time integer */
+
+$this->registerJs(
+    'setInterval(function(){
+        $.ajax({
             url: "' . Url::to(['user/user/online']) . '",
             type:"POST",
             data:{id: "'.\Yii::$app->user->id.'"},
