@@ -123,10 +123,10 @@ class UserSearch extends User
             ->andFilterWhere(['like', 'created_at', $this->created_at])
             ->andFilterWhere(['like', 'address', $this->address]);
 
-        if ($this->id_from){
+        if ($this->id_from) {
             $query->andFilterWhere(['>=', 'id', $this->id_from]);
         }
-        if ($this->id_till){
+        if ($this->id_till) {
             $query->andFilterWhere(['<=', 'id', $this->id_till]);
         }
         if ($this->created_at_from) {
