@@ -48,14 +48,14 @@ $assets = UserAsset::register($this);
             'id',
             [
                 'attribute' => 'country_id',
-                'value' => (isset ($model->country)) ? $model->country->name : null,
+                'value' => (isset($model->country)) ? $model->country->name : null,
             ],
             'city',
             'state',
             'region',
             [
                 'attribute' => 'biggest_city',
-                'value' => (isset ($model->biggest_city)) ? Yii::t('user', 'Да') : Yii::t('user', 'Нет'),
+                'value' => (isset($model->biggest_city)) ? Yii::t('user', 'Да') : Yii::t('user', 'Нет'),
             ],
         ],
     ]) ?>
