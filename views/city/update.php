@@ -10,7 +10,7 @@ use lowbase\user\UserAsset;
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model app\modules\user\models\City */
+/* @var $model lowbase\user\models\City */
 
 $this->title = Yii::t('user', 'Редактирование города');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('user', 'Города'), 'url' => ['index']];
