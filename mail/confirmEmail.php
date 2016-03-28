@@ -7,7 +7,7 @@
  */
 
 /* @var $this yii\web\View */
-/* @var $model common\models\User */
+/* @var $model \lowbase\user\models\User */
 
 use yii\helpers\Html;
 
