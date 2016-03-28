@@ -47,19 +47,19 @@ AuthChoiceStyleAsset::register($this);
 
     <?php
     $keys = '';
-        if ($model->keys) {
-            $keys .= "<div class='row'>";
-            foreach ($model->keys as $key) {
-                $services = array_flip(UserOauthKey::getAvailableClients());
-                $keys .= "<div class='col-xs-1'><a href='".UserOauthKey::getSites()[$key->provider_id].$key->page."'><span class='auth-icon ".$services[$key->provider_id]."'></span></a></div>";
-            }
-            $keys .= "</div>";
+    if ($model->keys) {
+        $keys .= "<div class='row'>";
+        foreach ($model->keys as $key) {
+            $services = array_flip(UserOauthKey::getAvailableClients());
+            $keys .= "<div class='col-xs-1'><a href='" . UserOauthKey::getSites()[$key->provider_id] . $key->page . "'><span class='auth-icon " . $services[$key->provider_id] . "'></span></a></div>";
         }
+        $keys .= "</div>";
+    }
     $roles = '';
     if ($model->authAssignments) {
         foreach ($model->authAssignments as $role) {
             $type = ($role->itemName->type == 1) ? 'label-primary' : 'label-success';
-            $roles .= Html::a('<span class="label '.$type.'">'.$role->itemName->description.'</span>', ['auth-item/view', 'id' => $role->itemName->name])." ";
+            $roles .= Html::a('<span class="label ' . $type . '">' . $role->itemName->description . '</span>', ['auth-item/view', 'id' => $role->itemName->name]) . " ";
         }
     }
     ?>
@@ -82,11 +82,11 @@ AuthChoiceStyleAsset::register($this);
             'phone',
             [
                 'attribute' => 'country_id',
-                'value' => (isset ($model->country)) ? $model->country->name : null,
+                'value' => (isset($model->country)) ? $model->country->name : null,
             ],
             [
                 'attribute' => 'city_id',
-                'value' => (isset ($model->city)) ? $model->city->city . " (" .
+                'value' => (isset($model->city)) ? $model->city->city . " (" .
                     $model->city->state . " " . $model->city->region . ")" : null,
             ],
             'address',
