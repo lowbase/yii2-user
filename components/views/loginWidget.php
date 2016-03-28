@@ -11,6 +11,9 @@ use lowbase\user\components\AuthChoice;
 use yii\widgets\ActiveForm;
 use lowbase\user\UserAsset;
 
+/* @var $model \lowbase\user\models\forms\LoginForm */
+/* @var $oauth boolean */
+
 UserAsset::register($this);
 ?>
 
