@@ -68,5 +68,4 @@ class GitHub extends \yii\authclient\clients\GitHub
 
         return $return_attributes;
     }
-
 }
