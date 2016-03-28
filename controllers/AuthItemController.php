@@ -154,7 +154,7 @@ class AuthItemController extends Controller
             foreach ($models as $id) {
                 $this->findModel($id)->delete();
             }
-            Yii::$app->getSession()->setFlash('success', Yii::t('user','Роли / допуски удалены' ));
+            Yii::$app->getSession()->setFlash('success', Yii::t('user', 'Роли / допуски удалены'));
         }
         return true;
     }
