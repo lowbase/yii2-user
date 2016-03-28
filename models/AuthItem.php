@@ -224,5 +224,4 @@ class AuthItem extends \yii\db\ActiveRecord
         }
         return true;
     }
-
 }
