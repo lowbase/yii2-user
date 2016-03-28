@@ -68,7 +68,7 @@ class LoginForm extends Model
             } elseif ($user && $user->status == User::STATUS_WAIT) {
                 $this->addError('email', Yii::t('user', 'Аккаунт не подтвержден. Проверьте Email.'));
             } elseif ($user && $user->status == User::STATUS_BLOCKED) {
-                $this->addError('email',  Yii::t('user', 'Аккаунт заблокирован. Свяжитель с администратором.'));
+                $this->addError('email', Yii::t('user', 'Аккаунт заблокирован. Свяжитель с администратором.'));
             }
         }
     }
