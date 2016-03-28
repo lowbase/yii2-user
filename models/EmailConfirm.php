@@ -11,7 +11,6 @@ namespace lowbase\user\models;
 use yii\base\InvalidParamException;
 use yii\base\Model;
 use Yii;
-use lowbase\user\models\User;
 
 class EmailConfirm extends Model
 {
