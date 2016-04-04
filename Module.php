@@ -41,8 +41,6 @@ class Module extends \yii\base\Module
      * alert - сообщения
      * repass - восстановление пароля
      * show - просмотр пользователя
-     * confirmEmail - шаблон письма подтверждения Email
-     * passwordResetToken - шаблон письма сброса пароля
      *
      * @param $customView - отображение
      * @param $default - отображение по умолчанию
@@ -54,6 +52,26 @@ class Module extends \yii\base\Module
             return $this->customViews[$customView];
         } else {
             return $default;
+        }
+    }
+    
+       /**
+     * Собственные шаблоны писем
+     * Допустимые параметры:
+     *
+     * confirmEmail - шаблон письма подтверждения Email
+     * passwordResetToken - шаблон письма сброса пароля
+     *
+     * @param $customMailViews - отображение
+     * @param $default - отображение по умолчанию
+     * @return mixed
+     */
+    public function getCustomMailView($default)
+    {
+        if (isset($this->customMailViews[$default])) {
+            return $this->customMailViews[$default];
+        } else {
+            return '@lowbase/user/mail/' . $default;
         }
     }
 
