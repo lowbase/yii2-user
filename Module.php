@@ -68,8 +68,8 @@ class Module extends \yii\base\Module
      */
     public function getCustomMailView($default)
     {
-        if (isset($this->customMailViews[$default])) {
-            return $this->customMailViews[$default];
+        if (isset($this->customMailView[$default])) {
+            return $this->customMailView[$default];
         } else {
             return '@lowbase/user/mail/' . $default;
         }
