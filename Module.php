@@ -16,8 +16,10 @@ class Module extends \yii\base\Module
 
     public $controllerNamespace = 'lowbase\user\controllers';
 
-    //Массив с собственными отображениями и шаблонами писем
+    //Массив с собственными отображениями
     public $customViews = [];
+    //Массив с собственными шаблонами писем
+    public $customMailViews = [];
 
     public $userPhotoPath = 'attach/user/images';
 
