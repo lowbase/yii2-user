@@ -66,7 +66,7 @@ class Module extends \yii\base\Module
      * @param $default - отображение по умолчанию
      * @return mixed
      */
-    public function getCustomMailView($customView,$default)
+    public function getCustomMailView($customView, $default)
     {
         if (isset($this->customMailView[$customView])) {
             return $this->customMailView[$customView];
