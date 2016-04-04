@@ -48,7 +48,7 @@ class Module extends \yii\base\Module
      * @param $default - отображение по умолчанию
      * @return mixed
      */
-    public function getCustomView($customView, $default = null)
+    public function getCustomView($customView, $default)
     {
         if (isset($this->customViews[$customView])) {
             return $this->customViews[$customView];
@@ -68,7 +68,7 @@ class Module extends \yii\base\Module
      * @param $default - отображение по умолчанию
      * @return mixed
      */
-    public function getCustomMailView($customView, $default = null)
+    public function getCustomMailView($customView, $default)
     {
         if (isset($this->customMailViews[$customView])) {
             return $this->customMailViews[$customView];
