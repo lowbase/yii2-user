@@ -17,7 +17,7 @@ $delay = 4000;
 if (Yii::$app->session->hasFlash('error')) {
     echo Alert::widget([
         'type' => Alert::TYPE_DANGER,
-        'title' => 'Ошибка',
+        'title' => Yii::t('user', 'Ошибка'),
         'icon' => 'glyphicon glyphicon-remove-sign',
         'body' => Yii::$app->session->getFlash('error'),
         'showSeparator' => true,
@@ -27,7 +27,7 @@ if (Yii::$app->session->hasFlash('error')) {
 if (Yii::$app->session->hasFlash('success')) {
     echo Alert::widget([
         'type' => Alert::TYPE_SUCCESS,
-        'title' => 'Результат',
+        'title' => Yii::t('user', 'Результат'),
         'icon' => 'glyphicon glyphicon-ok-sign',
         'body' => Yii::$app->session->getFlash('success'),
         'showSeparator' => true,
