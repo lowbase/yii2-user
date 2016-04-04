@@ -32,7 +32,7 @@ class PasswordResetForm extends Model
             [['password'], 'string', 'min' => 4],
             ['email', 'email'],
             ['email', 'exist',
-                'targetClass' => 'app\modules\user\models\User',
+                'targetClass' => '\lowbase\user\models\User',
                 'message' => \Yii::t('user', 'Пользователь с таким Email не зарегистрирован.')
             ],
             ['captcha', 'captcha', 'captchaAction' => '/user/default/captcha'],
