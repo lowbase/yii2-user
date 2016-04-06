@@ -17,6 +17,8 @@ use yii\filters\AccessControl;
 
 /**
  * CountryController implements the CRUD actions for Country model.
+ * Абсолютные пути Views использованы, чтобы при наследовании
+ * происходила связь с отображениями модуля родителя.
  */
 class CountryController extends Controller
 {
@@ -69,7 +71,7 @@ class CountryController extends Controller
         $searchModel = new CountrySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
+        return $this->render('@vendor/lowbase/yii2-user/views/country/index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -82,7 +84,7 @@ class CountryController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
+        return $this->render('@vendor/lowbase/yii2-user/views/country/view', [
             'model' => $this->findModel($id),
         ]);
     }
@@ -98,9 +100,9 @@ class CountryController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->getSession()->setFlash('success', Yii::t('user', 'Новая страна создана.'));
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['@vendor/lowbase/yii2-user/views/country/view', 'id' => $model->id]);
         } else {
-            return $this->render('create', [
+            return $this->render('@vendor/lowbase/yii2-user/views/country/create', [
                 'model' => $model,
             ]);
         }
@@ -118,9 +120,9 @@ class CountryController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->getSession()->setFlash('success', Yii::t('user', 'Страна отредактирована.'));
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['@vendor/lowbase/yii2-user/views/country/view', 'id' => $model->id]);
         } else {
-            return $this->render('update', [
+            return $this->render('@vendor/lowbase/yii2-user/views/country/update', [
                 'model' => $model,
             ]);
         }
@@ -137,7 +139,7 @@ class CountryController extends Controller
         $this->findModel($id)->delete();
         Yii::$app->getSession()->setFlash('success', Yii::t('user', 'Страна удалена.'));
 
-        return $this->redirect(['index']);
+        return $this->redirect(['@vendor/lowbase/yii2-user/views/country/index']);
     }
 
     /**
