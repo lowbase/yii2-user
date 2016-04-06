@@ -95,7 +95,7 @@ class AuthRuleController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->getSession()->setFlash('success', Yii::t('user', 'Правило контроля доступа создано.'));
-            return $this->redirect(['@vendor/lowbase/yii2-user/views/auth-rule/view', 'id' => $model->name]);
+            return $this->redirect(['view', 'id' => $model->name]);
         } else {
             return $this->render('@vendor/lowbase/yii2-user/views/auth-rule/create', [
                 'model' => $model,
@@ -114,7 +114,7 @@ class AuthRuleController extends Controller
         $this->findModel($id)->delete();
         Yii::$app->getSession()->setFlash('success', Yii::t('user', 'Правило контроля доступа удалено.'));
 
-        return $this->redirect(['@vendor/lowbase/yii2-user/views/auth-rule/index']);
+        return $this->redirect(['index']);
     }
 
 
