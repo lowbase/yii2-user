@@ -98,7 +98,7 @@ class AuthItemController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $message = ($model->type == 1) ? Yii::t('user', 'Роль создана') : Yii::t('user', 'Допуск создан');
             Yii::$app->getSession()->setFlash('success', $message);
-            return $this->redirect(['@vendor/lowbase/yii2-user/views/auth-item/view', 'id' => $model->name]);
+            return $this->redirect(['view', 'id' => $model->name]);
         } else {
             return $this->render('@vendor/lowbase/yii2-user/views/auth-item/create', [
                 'model' => $model,
@@ -120,7 +120,7 @@ class AuthItemController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $message = ($model->type == 1) ? Yii::t('user', 'Роль отредактирована') : Yii::t('user', 'Допуск отредактирован');
             Yii::$app->getSession()->setFlash('success', $message);
-            return $this->redirect(['@vendor/lowbase/yii2-user/views/auth-item/view', 'id' => $model->name]);
+            return $this->redirect(['view', 'id' => $model->name]);
         } else {
             return $this->render('@vendor/lowbase/yii2-user/views/auth-item/update', [
                 'model' => $model,
@@ -141,7 +141,7 @@ class AuthItemController extends Controller
         $model->delete();
         Yii::$app->getSession()->setFlash('success', $message);
 
-        return $this->redirect(['@vendor/lowbase/yii2-user/views/auth-item/index']);
+        return $this->redirect(['index']);
     }
 
     /**
