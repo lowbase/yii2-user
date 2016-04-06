@@ -17,6 +17,8 @@ use yii\filters\AccessControl;
 
 /**
  * AuthItemController implements the CRUD actions for AuthItem model.
+ * Абсолютные пути Views использованы, чтобы при наследовании
+ * происходила связь с отображениями модуля родителя.
  */
 class AuthItemController extends Controller
 {
