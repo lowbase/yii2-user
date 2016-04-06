@@ -134,7 +134,7 @@ class CityController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->getSession()->setFlash('success', Yii::t('user', 'Новый город создан.'));
-            return $this->redirect(['@vendor/lowbase/yii2-user/views/city/view', 'id' => $model->id]);
+            return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('@vendor/lowbase/yii2-user/views/city/create', [
                 'model' => $model,
@@ -154,7 +154,7 @@ class CityController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->getSession()->setFlash('success', Yii::t('user', 'Город отредактирован.'));
-            return $this->redirect(['@vendor/lowbase/yii2-user/views/city/view', 'id' => $model->id]);
+            return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('@vendor/lowbase/yii2-user/views/city/update', [
                 'model' => $model,
@@ -173,7 +173,7 @@ class CityController extends Controller
         $this->findModel($id)->delete();
         Yii::$app->getSession()->setFlash('success', Yii::t('user', 'Город удален.'));
 
-        return $this->redirect(['@vendor/lowbase/yii2-user/views/city/index']);
+        return $this->redirect(['index']);
     }
 
     /**
