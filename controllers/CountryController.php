@@ -100,7 +100,7 @@ class CountryController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->getSession()->setFlash('success', Yii::t('user', 'Новая страна создана.'));
-            return $this->redirect(['@vendor/lowbase/yii2-user/views/country/view', 'id' => $model->id]);
+            return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('@vendor/lowbase/yii2-user/views/country/create', [
                 'model' => $model,
@@ -120,7 +120,7 @@ class CountryController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->getSession()->setFlash('success', Yii::t('user', 'Страна отредактирована.'));
-            return $this->redirect(['@vendor/lowbase/yii2-user/views/country/view', 'id' => $model->id]);
+            return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('@vendor/lowbase/yii2-user/views/country/update', [
                 'model' => $model,
@@ -139,7 +139,7 @@ class CountryController extends Controller
         $this->findModel($id)->delete();
         Yii::$app->getSession()->setFlash('success', Yii::t('user', 'Страна удалена.'));
 
-        return $this->redirect(['@vendor/lowbase/yii2-user/views/country/index']);
+        return $this->redirect(['index']);
     }
 
     /**
