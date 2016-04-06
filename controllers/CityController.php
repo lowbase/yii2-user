@@ -76,7 +76,7 @@ class CityController extends Controller
         if (!is_null($q)) {
             $query = new Query();
             $query->select('id, city, state, region')
-                ->from('city')
+                ->from('lb_city')
                 ->where(['like', 'city', $q])
                 ->limit(1000);
             $command = $query->createCommand();
