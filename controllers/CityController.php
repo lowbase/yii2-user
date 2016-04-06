@@ -18,6 +18,8 @@ use yii\filters\AccessControl;
 
 /**
  * CityController implements the CRUD actions for City model.
+ * Абсолютные пути Views использованы, чтобы при наследовании
+ * происходила связь с отображениями модуля родителя.
  */
 class CityController extends Controller
 {
@@ -103,7 +105,7 @@ class CityController extends Controller
         $searchModel = new CitySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
+        return $this->render('@vendor/lowbase/yii2-user/views/city/index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -116,7 +118,7 @@ class CityController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
+        return $this->render('@vendor/lowbase/yii2-user/views/city/view', [
             'model' => $this->findModel($id),
         ]);
     }
@@ -132,9 +134,9 @@ class CityController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->getSession()->setFlash('success', Yii::t('user', 'Новый город создан.'));
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['@vendor/lowbase/yii2-user/views/city/view', 'id' => $model->id]);
         } else {
-            return $this->render('create', [
+            return $this->render('@vendor/lowbase/yii2-user/views/city/create', [
                 'model' => $model,
             ]);
         }
@@ -152,9 +154,9 @@ class CityController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->getSession()->setFlash('success', Yii::t('user', 'Город отредактирован.'));
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['@vendor/lowbase/yii2-user/views/city/view', 'id' => $model->id]);
         } else {
-            return $this->render('update', [
+            return $this->render('@vendor/lowbase/yii2-user/views/city/update', [
                 'model' => $model,
             ]);
         }
@@ -171,7 +173,7 @@ class CityController extends Controller
         $this->findModel($id)->delete();
         Yii::$app->getSession()->setFlash('success', Yii::t('user', 'Город удален.'));
 
-        return $this->redirect(['index']);
+        return $this->redirect(['@vendor/lowbase/yii2-user/views/city/index']);
     }
 
     /**
