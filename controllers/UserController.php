@@ -26,6 +26,8 @@ use yii\web\NotFoundHttpException;
 
 /**
  * Пользователи
+ * Абсолютные пути Views использованы, чтобы при наследовании
+ * происходила связь с отображениями модуля родителя.
  */
 class UserController extends Controller
 {
@@ -92,7 +94,7 @@ class UserController extends Controller
             return $this->goBack(['signup']);
         }
 
-        return $this->render($this->module->getCustomView('signup', 'signup'), [
+        return $this->render($this->module->getCustomView('signup', '@vendor/lowbase/yii2-user/views/user/signup'), [
             'model' => $model,
         ]);
     }
@@ -121,7 +123,7 @@ class UserController extends Controller
             return $this->goBack(['login']);
         }
 
-        return $this->render($this->module->getCustomView('login', 'login'), [
+        return $this->render($this->module->getCustomView('login', '@vendor/lowbase/yii2-user/views/user/login'), [
             'model' => $model,
             'forget' => $forget
         ]);
@@ -203,7 +205,7 @@ class UserController extends Controller
                 return $this->redirect(['profile']);
             }
         }
-        return $this->render($this->module->getCustomView('profile', 'profile'), [
+        return $this->render($this->module->getCustomView('profile', '@vendor/lowbase/yii2-user/views/user/profile'), [
             'model' => $model,
         ]);
 
@@ -213,7 +215,7 @@ class UserController extends Controller
     {
         $model = $this->findModel($id);
 
-        return $this->render($this->module->getCustomView('show', 'show'), [
+        return $this->render($this->module->getCustomView('show', '@vendor/lowbase/yii2-user/views/user/show'), [
             'model' => $model]);
     }
 
@@ -255,7 +257,7 @@ class UserController extends Controller
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
+        return $this->render('@vendor/lowbase/yii2-user/views/user/index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -269,7 +271,7 @@ class UserController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
+        return $this->render('@vendor/lowbase/yii2-user/views/user/view', [
             'model' => $this->findModel($id),
         ]);
     }
@@ -300,7 +302,7 @@ class UserController extends Controller
             }
         }
 
-        return $this->render('update', [
+        return $this->render('@vendor/lowbase/yii2-user/views/user/update', [
             'model' => $model
         ]);
     }
