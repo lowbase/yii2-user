@@ -9,6 +9,7 @@
 namespace lowbase\user\models;
 
 use Yii;
+use lowbase\user\models\City;
 
 /**
  * This is the model class for table "city".
@@ -74,5 +75,24 @@ class City extends \yii\db\ActiveRecord
     public function getCountry()
     {
         return $this->hasOne(Country::className(), ['id' => 'country_id']);
+    }
+    
+    /**
+     * Список регионов страны
+     */
+    public function Regions($country_id)
+    {
+        $region = [];
+        $city = City::find()
+            ->where(['country_id' => $country_id])
+            ->groupBy(['region'])
+            ->orderBy(['region' => SORT_ASC])
+            ->all();
+        if ($city) {
+            foreach ($city as $c) {
+                $region[$c->region] = $c->region;
+            }
+        }
+        return $region;
     }
 }
