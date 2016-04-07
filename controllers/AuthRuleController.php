@@ -79,7 +79,7 @@ class AuthRuleController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('@vendor/lowbase/yii2-user/views/auth-rule/index', [
+        return $this->render('@vendor/lowbase/yii2-user/views/auth-rule/view', [
             'model' => $this->findModel($id),
         ]);
     }
