@@ -9,7 +9,6 @@
 namespace lowbase\user\models;
 
 use Yii;
-use lowbase\user\models\City;
 
 /**
  * This is the model class for table "city".
