@@ -89,7 +89,7 @@ class City extends \yii\db\ActiveRecord
             ->all();
         if ($city) {
             foreach ($city as $c) {
-                $region[$c->region] = $c->region;
+                $region[$c->id] = $c->region;
             }
         }
         return $region;
