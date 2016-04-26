@@ -428,8 +428,13 @@ class User extends ActiveRecord implements IdentityInterface
             if (!file_exists($path)) {
                 mkdir($path, 0777, true);   // Создаем директорию при отсутствии
             }
-            Image::thumbnail($this->photo->tempName, 200, 200)
-                ->save($this->image);   // Сохраняем изображение в формате 200x200 пикселей
+            if (is_object($this->photo)) {
+                // Загружено через FileUploadInterface
+                Image::thumbnail($this->photo->tempName, 200, 200)->save($this->image);   // Сохраняем изображение в формате 200x200 пикселей
+            } else {
+                // Загружено по ссылке с удаленного сервера
+                file_put_contents($this->image, $this->photo);
+            }
             $this::getDb()
                 ->createCommand()
                 ->update($this->tableName(), ['image' => $this->image], ['id' => $this->id])
