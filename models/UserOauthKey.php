@@ -111,6 +111,6 @@ class UserOauthKey extends \yii\db\ActiveRecord
      */
     public static function isOAuth($user_id)
     {
-        return UserOauthKey::find()->where(['user_id' => $user_id])->count();
+        return self::find()->where(['user_id' => $user_id])->count();
     }
-}
+ }
