@@ -11,7 +11,7 @@ namespace lowbase\user\models;
 use Yii;
 
 /**
- * This is the model class for table "country".
+ * Страны
  *
  * @property integer $id
  * @property string $name
@@ -21,7 +21,8 @@ use Yii;
 class Country extends \yii\db\ActiveRecord
 {
     /**
-     * @inheritdoc
+     * Наименование таблицы
+     * @return string
      */
     public static function tableName()
     {
@@ -29,21 +30,23 @@ class Country extends \yii\db\ActiveRecord
     }
 
     /**
-     * @inheritdoc
+     * Правила валидации
+     * @return array
      */
     public function rules()
     {
         return [
-            [['name', 'currency_code'], 'required'],
-            [['name', 'currency'], 'string', 'max' => 255],
-            [['currency_code'], 'string', 'max' => 5],
-            [['currency'], 'default', 'value' => null],
-            [['name', 'currency_code', 'currency'], 'filter', 'filter' => 'trim'],
+            [['name', 'currency_code'], 'required'],    // Обязательные для заполнения
+            [['name', 'currency'], 'string', 'max' => 255], // Строки с количеством символов не более 255
+            [['currency_code'], 'string', 'max' => 5],  // Строка с количеством символов не более 5
+            [['name', 'currency_code', 'currency'], 'filter', 'filter' => 'trim'],  // Обрезание строк по бокам
+            [['currency'], 'default', 'value' => null], // Значения по умолчанию = null
         ];
     }
 
     /**
-     * @inheritdoc
+     * Наименование полей аттрибутов
+     * @return array
      */
     public function attributeLabels()
     {
@@ -56,6 +59,7 @@ class Country extends \yii\db\ActiveRecord
     }
 
     /**
+     * Пользователи из этой страны
      * @return \yii\db\ActiveQuery
      */
     public function getUsers()
@@ -64,13 +68,13 @@ class Country extends \yii\db\ActiveRecord
     }
 
     /**
-     * Список всех стран массивом
+     * Список всех стран массивом [ID => Название страны]
      * @return array
      */
     public static function getAll()
     {
         $countries = [];
-        $model = Country::find()->all();
+        $model = self::find()->all();
         if ($model) {
             foreach ($model as $m) {
                 $countries[$m->id] = $m->name;
