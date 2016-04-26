@@ -13,56 +13,58 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
 /**
- * AuthRuleSearch represents the model behind the search form about `app\modules\user\models\AuthRule`.
+ * Поиск правил допусков
  */
 class AuthRuleSearch extends AuthRule
 {
+    const COUNT = 50; // количество правил на одной странице
+
     /**
-     * @inheritdoc
+     * Правила валидации
+     * @return array
      */
     public function rules()
     {
         return [
-            [['name', 'data'], 'safe'],
-            [['created_at', 'updated_at'], 'integer'],
+            [['name', 'data'], 'safe'], //  Безопасные аттрибуты
+            [['created_at', 'updated_at'], 'integer'],  // Целочисленные значения
         ];
     }
 
     /**
-     * @inheritdoc
+     * Сценарии
+     * @return array
      */
     public function scenarios()
     {
-        // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
 
     /**
-     * Creates data provider instance with search query applied
-     *
-     * @param array $params
-     *
+     * Создает DataProvider на основе переданных данных
+     * @param $params - параметры
      * @return ActiveDataProvider
      */
     public function search($params)
     {
         $query = AuthRule::find();
 
-        // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize'=> $this::COUNT,
+            ],
         ]);
 
         $this->load($params);
 
+        // Если валидация не пройдена, то ничего не выводить
         if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
+            $query->where('0=1');
             return $dataProvider;
         }
 
-        // grid filtering conditions
+        // Фильтрация
         $query->andFilterWhere([
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
