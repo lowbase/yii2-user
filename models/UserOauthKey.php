@@ -11,7 +11,7 @@ namespace lowbase\user\models;
 use Yii;
 
 /**
- * This is the model class for table "user_oauth_key".
+ * Ключи авторизации пользователей
  *
  * @property integer $id
  * @property integer $user_id
@@ -24,7 +24,8 @@ use Yii;
 class UserOauthKey extends \yii\db\ActiveRecord
 {
     /**
-     * @inheritdoc
+     * Название таблицы
+     * @return string
      */
     public static function tableName()
     {
@@ -32,7 +33,8 @@ class UserOauthKey extends \yii\db\ActiveRecord
     }
 
     /**
-     * @inheritdoc
+     * Поддерживаемые социальные сети
+     * @return array
      */
     public static function getAvailableClients()
     {
@@ -46,6 +48,12 @@ class UserOauthKey extends \yii\db\ActiveRecord
         ];
     }
 
+    /**
+     * Приставки для формирования
+     * личных страниц пользователей в 
+     * социальных сетях
+     * @return array
+     */
     public static function getSites()
     {
         return [
@@ -59,20 +67,22 @@ class UserOauthKey extends \yii\db\ActiveRecord
     }
 
     /**
-     * @inheritdoc
+     * Правила валидации
+     * @return array
      */
     public function rules()
     {
         return [
-            [['user_id', 'provider_id'], 'integer'],
-            [['provider_user_id', 'page'], 'string', 'max' => 255],
-            [['user_id', 'provider_id', 'provider_user_id'], 'required'],
-            [['page'], 'default', 'value' => null],
+            [['user_id', 'provider_id'], 'integer'],    // Целочисленные значения
+            [['provider_user_id', 'page'], 'string', 'max' => 255], // Строки с максимальной длинной 255 символов
+            [['user_id', 'provider_id', 'provider_user_id'], 'required'],   // Обязательные поля для заполнения
+            [['page'], 'default', 'value' => null], // Значение по умолчанию = null
         ];
     }
 
     /**
-     * @inheritdoc
+     * Наименование полей аттрибутов модели
+     * @return array
      */
     public function attributeLabels()
     {
@@ -86,6 +96,7 @@ class UserOauthKey extends \yii\db\ActiveRecord
     }
 
     /**
+     * Пользователь, которому принадлежит ключ
      * @return \yii\db\ActiveQuery
      */
     public function getUser()
@@ -94,7 +105,8 @@ class UserOauthKey extends \yii\db\ActiveRecord
     }
 
     /**
-     * @param $user_id
+     * Возвращает количество активированных социальных сетей
+     * @param $user_id - ID пользователя
      * @return int|string
      */
     public static function isOAuth($user_id)
