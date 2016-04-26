@@ -12,7 +12,7 @@ use Yii;
 use yii\behaviors\TimestampBehavior;
 
 /**
- * This is the model class for table "auth_rule".
+ * Правила допусков
  *
  * @property string $name
  * @property string $data
@@ -24,13 +24,18 @@ use yii\behaviors\TimestampBehavior;
 class AuthRule extends \yii\db\ActiveRecord
 {
     /**
-     * @inheritdoc
+     * Название таблицы
+     * @return string
      */
     public static function tableName()
     {
         return 'lb_auth_rule';
     }
 
+    /**
+     * Автоподстановка времени созадния и обновления
+     * @return array
+     */
     public function behaviors()
     {
         return [[
@@ -42,20 +47,22 @@ class AuthRule extends \yii\db\ActiveRecord
     }
 
     /**
-     * @inheritdoc
+     * Правила валидации
+     * @return array
      */
     public function rules()
     {
         return [
-            [['name'], 'required'],
-            [['name'], 'unique'],
-            [['data'], 'string'],
-            [['name'], 'string', 'max' => 64],
+            [['name'], 'required'], // Обязательно для заполнения
+            [['name'], 'unique'],   // Уникальное значение
+            [['data'], 'string'],   // Строка
+            [['name'], 'string', 'max' => 64],  // Строка (64 символа максимум)
         ];
     }
 
     /**
-     * @inheritdoc
+     * Названия полей аттрибутов
+     * @return array
      */
     public function attributeLabels()
     {
@@ -68,6 +75,7 @@ class AuthRule extends \yii\db\ActiveRecord
     }
 
     /**
+     * Допуски, имеющие текущее правило
      * @return \yii\db\ActiveQuery
      */
     public function getAuthItems()
@@ -75,6 +83,11 @@ class AuthRule extends \yii\db\ActiveRecord
         return $this->hasMany(AuthItem::className(), ['rule_name' => 'name']);
     }
 
+    /**
+     * Сериализация данных перед валидацией
+     * Проверка существования класса (файла с правилами)
+     * @return bool
+     */
     public function beforeValidate()
     {
         if ($this->data) {
@@ -85,36 +98,24 @@ class AuthRule extends \yii\db\ActiveRecord
                 $this->addError('data', Yii::t('user', 'Класс не найден'));
             }
         }
+
         return true;
     }
 
     /**
-     * @param bool $insert
-     * @return bool
-     */
-    public function beforeSave($insert)
-    {
-        if (parent::beforeSave($insert)) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Список всех правил массивом
-     * @param array $type
-     * @return array
+     * Массив всех правил
+     * @return array - [Название => Название]
      */
     public static function getAll()
     {
-        $rule = [];
-        $model = AuthRule::find()
+        $rules = [];
+        $model = self::find()
             ->all();
         if ($model) {
             foreach ($model as $m) {
-                $rule[$m->name] = $m->name;
+                $rules[$m->name] = $m->name;
             }
         }
-        return $rule;
+        return $rules;
     }
 }
