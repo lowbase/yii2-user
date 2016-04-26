@@ -11,7 +11,7 @@ namespace lowbase\user\models;
 use Yii;
 
 /**
- * This is the model class for table "auth_item_child".
+ * Связи между ролями и допусками
  *
  * @property string $parent
  * @property string $child
@@ -22,7 +22,8 @@ use Yii;
 class AuthItemChild extends \yii\db\ActiveRecord
 {
     /**
-     * @inheritdoc
+     * Наименование таблицы
+     * @return string
      */
     public static function tableName()
     {
@@ -30,19 +31,21 @@ class AuthItemChild extends \yii\db\ActiveRecord
     }
 
     /**
-     * @inheritdoc
+     * Правила валидации
+     * @return array
      */
     public function rules()
     {
         return [
-            [['parent', 'child'], 'required'],
-            [['parent', 'child'], 'string', 'max' => 64],
+            [['parent', 'child'], 'required'],  // Обязательно для заполнения
+            [['parent', 'child'], 'string', 'max' => 64],   // Строка (максимум 64 символа)
             [['child'], 'exist', 'skipOnError' => true, 'targetClass' => AuthItem::className(), 'targetAttribute' => ['child' => 'name']],
             [['parent'], 'exist', 'skipOnError' => true, 'targetClass' => AuthItem::className(), 'targetAttribute' => ['parent' => 'name']],
         ];
     }
 
     /**
+     * Дочерняя роль или допуск
      * @return \yii\db\ActiveQuery
      */
     public function getChild0()
@@ -51,6 +54,7 @@ class AuthItemChild extends \yii\db\ActiveRecord
     }
 
     /**
+     * Родительская роль или допуск
      * @return \yii\db\ActiveQuery
      */
     public function getParent0()
