@@ -57,7 +57,7 @@ class Module extends \yii\base\Module
         }
     }
     
-       /**
+    /**
      * Собственные шаблоны писем
      * Допустимые параметры:
      *
@@ -88,7 +88,7 @@ class Module extends \yii\base\Module
                 'basePath' => '@lowbase/user/messages',
                 'forceTranslation' => true,
                 'fileMap' => [
-                    'users' => 'user.php'
+                    'user' => 'user.php'
                 ]
             ];
         }
