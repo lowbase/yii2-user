@@ -13,59 +13,58 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
 /**
- * CountrySearch represents the model behind the search form about `app\modules\user\models\Country`.
+ * Поиск по странам
  */
 class CountrySearch extends Country
 {
+    const COUNT = 50; // количество стран на одной странице
+
     /**
-     * @inheritdoc
+     * Правила валидации
+     * @return array
      */
     public function rules()
     {
         return [
-            [['id'], 'integer'],
-            [['name', 'currency_code', 'currency'], 'safe'],
+            [['id'], 'integer'],    // Целочисленные значения
+            [['name', 'currency_code', 'currency'], 'safe'],    // Безопасные аттрибуты
         ];
     }
 
     /**
-     * @inheritdoc
+     * Сценарии
+     * @return array
      */
     public function scenarios()
     {
-        // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
 
     /**
-     * Creates data provider instance with search query applied
-     *
-     * @param array $params
-     *
+     * Создает DataProvider на основе переданных данных
+     * @param $params - параметры
      * @return ActiveDataProvider
      */
     public function search($params)
     {
         $query = Country::find();
 
-        // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSize'=>50,
+                'pageSize'=> $this::COUNT,
             ],
         ]);
 
         $this->load($params);
 
+        // Если валидация не пройдена, то ничего не выводить
         if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
+            $query->where('0=1');
             return $dataProvider;
         }
 
-        // grid filtering conditions
+        // Фильтрация
         $query->andFilterWhere([
             'id' => $this->id,
         ]);
