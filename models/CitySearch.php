@@ -13,59 +13,60 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
 /**
- * CitySearch represents the model behind the search form about `app\modules\user\models\City`.
+ * Поиск по городам
+ * Class CitySearch
+ * @package lowbase\user\models
  */
 class CitySearch extends City
 {
+    const COUNT = 50; // количество городов на одной странице
+
     /**
-     * @inheritdoc
+     * Правила валидации
+     * @return array
      */
     public function rules()
     {
         return [
-            [['id', 'country_id', 'biggest_city'], 'integer'],
-            [['city', 'state', 'region'], 'safe'],
+            [['id', 'country_id', 'biggest_city'], 'integer'],  // Целочисленные значения
+            [['city', 'state', 'region'], 'safe'],  // Безопасные аттрибуты
         ];
     }
 
     /**
-     * @inheritdoc
+     * Сценарии
+     * @return array
      */
     public function scenarios()
     {
-        // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
 
     /**
-     * Creates data provider instance with search query applied
-     *
-     * @param array $params
-     *
+     * Создает DataProvider на основе переданных данных
+     * @param $params - параметры
      * @return ActiveDataProvider
      */
     public function search($params)
     {
         $query = City::find();
 
-        // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSize'=>50,
+                'pageSize'=> $this::COUNT,
             ],
         ]);
 
         $this->load($params);
 
+        // Если валидация не пройдена, то ничего не выводить
         if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
+            $query->where('0=1');
             return $dataProvider;
         }
 
-        // grid filtering conditions
+        // Фильтрация
         $query->andFilterWhere([
             'id' => $this->id,
             'country_id' => $this->country_id,
