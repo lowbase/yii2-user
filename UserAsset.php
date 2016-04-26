@@ -11,7 +11,7 @@ namespace lowbase\user;
 use yii\web\AssetBundle;
 
 /**
- * Widget asset bundle
+ * Подключение CSS и JS
  */
 class UserAsset extends AssetBundle
 {
