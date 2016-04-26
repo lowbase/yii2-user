@@ -13,42 +13,53 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
 /**
- * UserSearch represents the model behind the search form about `app\modules\user\models\User`.
+ * Поиск среди пользователей
+ * Class UserSearch
+ * @package lowbase\user\models
  */
 class UserSearch extends User
 {
-    public $id_from;
-    public $id_till;
-    public $created_at_from;
-    public $created_at_till;
-    public $login_at_from;
-    public $login_at_till;
-    public $birthday_from;
-    public $birthday_till;
+
+    const COUNT = 50; // количество пользователей на одной странице
+
+    public $id_from; // начало диапазона поиска по ID
+    public $id_till; // конец диапазона поиска по ID
+    public $created_at_from; // начало диапазона поиска по дате регистрации
+    public $created_at_till; // конец диапазона поиска по дате регистрации
+    public $login_at_from; // начало диапазона поиска по дате последней авторизации
+    public $login_at_till; // конец диапазона поиска по дате последней авторизации
+    public $birthday_from; // начало диапазона поиска по дню рождения
+    public $birthday_till; // конец диапазона поиска по дню рождения
 
     /**
-     * @inheritdoc
+     * Правила валидации
+     * @return array
      */
     public function rules()
     {
         return [
-            [['id', 'sex', 'country_id', 'city_id', 'status', 'id_from', 'id_till'], 'integer'],
+            [['id', 'sex', 'country_id', 'city_id', 'status', 'id_from', 'id_till'], 'integer'],    // Целочисленные значения
             [['first_name', 'last_name', 'auth_key', 'password_hash', 'password_reset_token',
                 'email_confirm_token', 'email', 'image', 'birthday', 'phone', 'address',
                 'created_at', 'updated_at', 'created_at_from', 'created_at_till',
-                'birthday_from', 'birthday_till', 'login_at', 'ip', 'login_at_from', 'login_at_till'], 'safe'],
+                'birthday_from', 'birthday_till', 'login_at', 'ip', 'login_at_from', 'login_at_till'], 'safe'], // Безопасные аттрибуты
         ];
     }
 
     /**
-     * @inheritdoc
+     * Сценарии
+     * @return array
      */
     public function scenarios()
     {
-        // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
 
+    /**
+     * Наименования дополнительных полей
+     * аттрибутов, присущих модели поиска
+     * @return array
+     */
     public function attributeLabels()
     {
         $label = parent::attributeLabels();
@@ -64,23 +75,20 @@ class UserSearch extends User
     }
 
     /**
-     * Creates data provider instance with search query applied
-     *
-     * @param array $params
-     *
+     * Создает DataProvider на основе переданных данных
+     * @param $params - параметры
      * @return ActiveDataProvider
      */
     public function search($params)
     {
         $query = User::find();
 
-        // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSize'=>50,
+                'pageSize'=> $this::COUNT,
             ],
+            // Сортировка по умолчанию
             'sort' => array(
                 'defaultOrder' => ['created_at' => SORT_DESC],
             ),
@@ -88,13 +96,13 @@ class UserSearch extends User
 
         $this->load($params);
 
+        // Если валидация не пройдена, то ничего не выводить
         if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
+            $query->where('0=1');
             return $dataProvider;
         }
 
-        // grid filtering conditions
+        // Фильтр данных
         $query->andFilterWhere([
             'id' => $this->id,
             'sex' => $this->sex,
@@ -131,39 +139,27 @@ class UserSearch extends User
         }
         if ($this->created_at_from) {
             $date_from = new \DateTime($this->created_at_from);
-            $this->created_at_from = $date_from->format('Y-m-d');
-            $query->andFilterWhere(['>=', 'created_at', $this->created_at_from]);
-            $this->created_at_from = $date_from->format('d.m.Y');
+            $query->andFilterWhere(['>=', 'created_at', $date_from->format('Y-m-d')]);
         }
         if ($this->created_at_till) {
             $date_till = new \DateTime($this->created_at_till);
-            $this->created_at_till = $date_till->format('Y-m-d');
-            $query->andFilterWhere(['<=', 'created_at', $this->created_at_till]);
-            $this->created_at_till = $date_till->format('d.m.Y');
+            $query->andFilterWhere(['<=', 'created_at', $date_till->format('Y-m-d')]);
         }
         if ($this->login_at_from) {
             $date_from = new \DateTime($this->login_at_from);
-            $this->login_at_from = $date_from->format('Y-m-d');
-            $query->andFilterWhere(['>=', 'login_at', $this->login_at_from]);
-            $this->login_at_from = $date_from->format('d.m.Y');
+            $query->andFilterWhere(['>=', 'login_at', $date_from->format('Y-m-d')]);
         }
         if ($this->login_at_till) {
             $date_till = new \DateTime($this->login_at_till);
-            $this->login_at_till = $date_till->format('Y-m-d');
-            $query->andFilterWhere(['<=', 'login_at', $this->login_at_till]);
-            $this->login_at_till = $date_till->format('d.m.Y');
+            $query->andFilterWhere(['<=', 'login_at', $date_till->format('Y-m-d')]);
         }
         if ($this->birthday_from) {
             $birthday_from = new \DateTime($this->birthday_from);
-            $this->birthday_from = $birthday_from->format('Y-m-d');
-            $query->andFilterWhere(['>=', 'birthday', $this->birthday_from]);
-            $this->birthday_from = $birthday_from->format('d.m.Y');
+            $query->andFilterWhere(['>=', 'birthday', $birthday_from->format('Y-m-d')]);
         }
         if ($this->birthday_till) {
             $birthday_till = new \DateTime($this->birthday_till);
-            $this->birthday_till = $birthday_till->format('Y-m-d');
-            $query->andFilterWhere(['<=', 'birthday', $this->birthday_till]);
-            $this->birthday_till = $birthday_till->format('d.m.Y');
+            $query->andFilterWhere(['<=', 'birthday', $birthday_till->format('Y-m-d')]);
         }
 
         return $dataProvider;
