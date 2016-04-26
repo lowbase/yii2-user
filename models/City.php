@@ -89,7 +89,7 @@ class City extends \yii\db\ActiveRecord
     public static function regions($country_id)
     {
         $region = [];
-        $city = City::find()
+        $city = self::find()
             ->where(['country_id' => $country_id])
             ->groupBy(['region'])
             ->orderBy(['region' => SORT_ASC])
