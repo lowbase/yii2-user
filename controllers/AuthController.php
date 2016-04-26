@@ -87,7 +87,7 @@ class AuthController extends Controller
                     $user->validate();
                     if (file_get_contents($user->photo)) {
                         $content = file_get_contents($user->photo);
-                        file_put_contents($user->image, $content);
+                        file_put_contents($user->photo, $content);
                     }
                     return ($user->save() && $this->createKey($attributes, $user->id) && Yii::$app->user->login($user, 3600 * 24 * 30));
                 } else {
