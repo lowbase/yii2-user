@@ -16,7 +16,7 @@ use yii\web\IdentityInterface;
 use yii\db\ActiveRecord;
 
 /**
- * This is the model class for table "user".
+ * Класс пользователей
  *
  * @property integer $id
  * @property string $first_name
@@ -45,19 +45,28 @@ use yii\db\ActiveRecord;
  */
 class User extends ActiveRecord implements IdentityInterface
 {
-    //Статусы пользователя
-    const STATUS_BLOCKED = 0;
-    const STATUS_ACTIVE = 1;
-    const STATUS_WAIT = 2;
+    // Статусы пользователя
+    const STATUS_BLOCKED = 0;   // заблокирован
+    const STATUS_ACTIVE = 1;    // активен
+    const STATUS_WAIT = 2;      // ожидает подтверждения
 
-    //Гендерные статусы
-    const SEX_MALE = 1;
-    const SEX_FEMALE = 2;
+    // Гендерные статусы
+    const SEX_MALE = 1;     // мужчина
+    const SEX_FEMALE = 2;   // женщина
 
-    public $photo;
+    // Время действия токенов
+    const EXPIRE = 3600;
+
+    // Расширение сохраняемого файла изобрежния
+    // Определение Mime не предусмотрено. Файлы
+    // изобрежния в соц. сетях часто без расширения в
+    // названиях
+    const EXT = '.jpg';
+
+    public $photo;  // аватар (само изображение)
 
     /**
-     * @inheritdoc
+     * @return string
      */
     public static function tableName()
     {
@@ -65,8 +74,9 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @inheritdoc
-     *  Автозаполнение полей created_at и update_at
+     * Автозаполнение полей создание и редактирование
+     * профиля
+     * @return array
      */
     public function behaviors()
     {
@@ -80,6 +90,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     /**
      * Статусы пользователя
+     * @return array
      */
     public static function getStatusArray()
     {
@@ -92,6 +103,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     /**
      * Гендерный список
+     * @return array
      */
     public static function getSexArray()
     {
@@ -102,37 +114,38 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @inheritdoc
+     * Правила валидации модели
+     * @return array
      */
     public function rules()
     {
         return [
-            [['first_name'], 'required'],
-            [['sex', 'country_id', 'city_id', 'status'], 'integer'],
-            [['birthday', 'login_at'], 'safe'],
-            [['first_name', 'last_name', 'email', 'phone'], 'string', 'max' => 100],
-            [['auth_key'], 'string', 'max' => 32],
-            [['ip'], 'string', 'max' => 32],
-            [['password_hash', 'password_reset_token', 'email_confirm_token', 'image', 'address'], 'string', 'max' => 255],
-            ['status', 'in', 'range' => array_keys(self::getStatusArray())],
-            ['status', 'default', 'value' => self::STATUS_ACTIVE],
-            ['sex', 'in', 'range' => array_keys(self::getSexArray())],
-            ['email', 'email'],
+            [['first_name'], 'required'],   // Имя обязательно для заполнения
+            [['sex', 'country_id', 'city_id', 'status'], 'integer'],    // Только целочисленные значения
+            [['birthday', 'login_at'], 'safe'], // Безопасные аттрибуты (любые значения) - преобразуются автоматически
+            [['first_name', 'last_name', 'email', 'phone'], 'string', 'max' => 100],    // Строки до 100 символов
+            [['auth_key', 'ip'], 'string', 'max' => 32],  // Строка до 32 символов
+            [['password_hash', 'password_reset_token', 'email_confirm_token', 'image', 'address'], 'string', 'max' => 255], // Строки до 255 символов
+            ['status', 'in', 'range' => array_keys(self::getStatusArray())],    // Статус возможен только из списка статусов
+            ['status', 'default', 'value' => self::STATUS_ACTIVE],  // По умолчанию статус "Активен"
+            ['sex', 'in', 'range' => array_keys(self::getSexArray())],  // Пол только из гендерного списка
+            ['email', 'email'], // Формат электронной почты
             ['email', 'unique', 'targetClass' => self::className(),
-                'message' => Yii::t('user', 'Данный Email уже зарегистрирован.')],
-            [['first_name', 'last_name', 'email', 'phone', 'address'], 'filter', 'filter' => 'trim'],
+                'message' => Yii::t('user', 'Данный Email уже зарегистрирован.')],  // Уникальный почтовый ящик
+            [['first_name', 'last_name', 'email', 'phone', 'address'], 'filter', 'filter' => 'trim'],   // Обрезаем строки по краям
             [['last_name', 'password_reset_token', 'email_confirm_token',
                 'image', 'sex', 'phone', 'country_id', 'city_id', 'address',
-                'auth_key', 'password_hash', 'email', 'ip', 'login_at'], 'default', 'value' => null],
+                'auth_key', 'password_hash', 'email', 'ip', 'login_at'], 'default', 'value' => null],   // По умолчанию Null
             [['photo'], 'image',
                 'minHeight' => 100,
                 'skipOnEmpty' => true
-            ],
+            ],  // Изображение не менее 100 пикселей в высоту
         ];
     }
 
     /**
-     * @inheritdoc
+     * Наименования полей модели
+     * @return array
      */
     public function attributeLabels()
     {
@@ -162,6 +175,7 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
+     * Сязи пользователь => роль
      * @return \yii\db\ActiveQuery
      */
     public function getAuthAssignments()
@@ -170,6 +184,7 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
+     * Роли и допуски (разрешения)
      * @return \yii\db\ActiveQuery
      */
     public function getItemNames()
@@ -178,6 +193,7 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
+     * Ключи авторизации соц. сетей и страницы соц. сетей
      * @return \yii\db\ActiveQuery
      */
     public function getKeys()
@@ -186,6 +202,7 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
+     * Страна
      * @return \yii\db\ActiveQuery
      */
     public function getCountry()
@@ -195,6 +212,7 @@ class User extends ActiveRecord implements IdentityInterface
 
 
     /**
+     * Город
      * @return \yii\db\ActiveQuery
      */
     public function getCity()
@@ -203,7 +221,8 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @param int|string $id
+     * Поиск пользователя по Id
+     * @param int|string $id - ID
      * @return null|static
      */
     public static function findIdentity($id)
@@ -212,7 +231,8 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @param $email
+     * Поиск пользователя по Email
+     * @param $email - электронная почта
      * @return null|static
      */
     public static function findByEmail($email)
@@ -221,7 +241,8 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @inheritdoc
+     * Ключ авторизации
+     * @return string
      */
     public function getAuthKey()
     {
@@ -229,7 +250,8 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @inheritdoc
+     * ID пользователя
+     * @return int
      */
     public function getId()
     {
@@ -237,7 +259,9 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @inheritdoc
+     * Проверка ключа авторизации
+     * @param string $authKey - ключ авторизации
+     * @return bool
      */
     public function validateAuthKey($authKey)
     {
@@ -245,7 +269,10 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @inheritdoc
+     * Поиск по токену доступа (не поддерживается)
+     * @param mixed $token - токен
+     * @param null $type - тип
+     * @throws NotSupportedException - Исключение "Не подерживается"
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
@@ -253,7 +280,9 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @inheritdoc
+     * Проверка правильности пароля
+     * @param $password - пароль
+     * @return bool
      */
     public function validatePassword($password)
     {
@@ -261,7 +290,8 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @inheritdoc
+     * Генераия Хеша пароля
+     * @param $password - пароль
      */
     public function setPassword($password)
     {
@@ -269,7 +299,10 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @inheritdoc
+     * Поиск по токену восстановления паролья
+     * Работает и для неактивированных пользователей
+     * @param $token - токен восстановления пароля
+     * @return null|static
      */
     public static function findByPasswordResetToken($token)
     {
@@ -277,13 +310,13 @@ class User extends ActiveRecord implements IdentityInterface
             return null;
         }
         return static::findOne([
-            'password_reset_token' => $token,
-            'status' => self::STATUS_ACTIVE,
+            'password_reset_token' => $token
         ]);
     }
 
     /**
-     * @inheritdoc
+     * Генерация случайного авторизационного ключа
+     * для пользователя
      */
     public function generateAuthKey()
     {
@@ -291,21 +324,24 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @inheritdoc
+     * Проверка токена восстановления пароля
+     * согласно его давности, заданной константой EXPIRE
+     * @param $token - токен восстановления пароля
+     * @return bool
      */
     public static function isPasswordResetTokenValid($token)
     {
         if (empty($token)) {
             return false;
         }
-        $expire = 3600;
         $parts = explode('_', $token);
         $timestamp = (int) end($parts);
-        return $timestamp + $expire >= time();
+        return $timestamp + self::EXPIRE >= time();
     }
 
     /**
-     * @inheritdoc
+     * Генерация случайного токена
+     * восстановления пароля
      */
     public function generatePasswordResetToken()
     {
@@ -313,7 +349,7 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @inheritdoc
+     * Очищение токена восстановления пароля
      */
     public function removePasswordResetToken()
     {
@@ -321,7 +357,9 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @inheritdoc
+     * Проверка токена подтверждения Email
+     * @param $email_confirm_token - токен подтверждения электронной почты
+     * @return null|static
      */
     public static function findByEmailConfirmToken($email_confirm_token)
     {
@@ -329,7 +367,8 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @inheritdoc
+     * Генерация случайного токена
+     * подтверждения электронной почты
      */
     public function generateEmailConfirmToken()
     {
@@ -337,103 +376,106 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @inheritdoc
+     * Очищение токена подтверждения почты
      */
     public function removeEmailConfirmToken()
     {
         $this->email_confirm_token = null;
     }
 
-     /**
+    /**
      * @param bool $insert
      * @param array $changedAttributes
-     * @return bool
+     * Сохраняем изображения после сохранения
+     * данных пользователя
      */
     public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);
         $this->saveImage();
-        return true;
     }
 
     /**
-     * @param $id
-     * @return bool
-     * @throws \yii\db\Exception
+     * Действия, выполняющиеся после авторизации.
+     * Сохранение IP адреса и даты авторизации.
+     *
+     * Для активации текущего обновления необходимо
+     * повесить текущую функцию на событие 'on afterLogin'
+     * компонента user в конфигурационном файле.
+     * @param $id - ID пользователя
      */
     public static function afterLogin($id)
     {
         $db = self::getDb();
-        $db->createCommand()->update('lb_user', ['ip' => $_SERVER["REMOTE_ADDR"], 'login_at' => date('Y-m-d H:i:s')], ['id' => $id])->execute();
-        return true;
+        $db->createCommand()->update('lb_user', [
+            'ip' => $_SERVER["REMOTE_ADDR"],
+            'login_at' => date('Y-m-d H:i:s')
+        ], ['id' => $id])->execute();
     }
 
     /**
-     * Сохранение фото
-     * @return bool
-     * @throws \yii\db\Exception
+     * Сохранение изображения (аватара)
+     * пользвоателя
      */
     public function saveImage()
     {
         if ($this->photo) {
-            $this->removeImage();
+            $this->removeImage();   // Сначала удаляем старое изображение
             $module = Yii::$app->controller->module;
-            $ext = ".jpg";
-            $name = time() . '-' . $this->id;
-            $path = $module->userPhotoPath;
-            $full_name = $path. '/' . $name . $ext;
+            $path = $module->userPhotoPath; // Путь для сохранения аватаров
+            $name = time() . '-' . $this->id; // Название файла
+            $this->image = $path. '/' . $name . $this::EXT;   // Путь файла и название
             if (!file_exists($path)) {
-                mkdir($path, 0777, true);
+                mkdir($path, 0777, true);   // Создаем директорию при отсутствии
             }
-            if (is_object($this->photo)) {
-                Image::thumbnail($this->photo->tempName, 200, 200)->save($full_name);
-            } else {
-                if (file_get_contents($this->photo)) {
-                    $content = file_get_contents($this->photo);
-                    file_put_contents($full_name, $content);
-                }
-            }
-            $this->image = $full_name;
-            $db = User::getDb();
-            $db->createCommand()->update('lb_user', ['image' => $full_name], ['id' => $this->id])->execute();
+            Image::thumbnail($this->photo->tempName, 200, 200)
+                ->save($this->image);   // Сохраняем изображение в формате 200x200 пикселей
+            $this::getDb()
+                ->createCommand()
+                ->update($this->tableName(), ['image' => $this->image], ['id' => $this->id])
+                ->execute();
         }
-        return true;
     }
 
     /**
-     * Удаление фото
-     * @return bool
-     * @throws \yii\db\Exception
+     * Удаляем изображение при его наличии
      */
     public function removeImage()
     {
         if ($this->image) {
+            // Если файл существует
             if (file_exists($this->image)) {
                 unlink($this->image);
             }
+            // Не регистрация пользователя
             if (!$this->isNewRecord) {
-                $db = User::getDb();
-                $db->createCommand()->update('lb_user', ['image' => null], ['id' => $this->id])->execute();
+                $this::getDb()
+                    ->createCommand()
+                    ->update($this::tableName(), ['image' => null], ['id' => $this->id])
+                    ->execute();
             }
         }
-        return true;
     }
 
     /**
-     * Список всех пользователей массивом
-     * @param array $type
-     * @return array
+     * Список всех пользователей
+     * @param bool $show_id - показывать ID пользователя
+     * @return array - [id => Имя Фамилия (ID)]
      */
-    public static function getAll()
+    public static function getAll($show_id = false)
     {
-        $user = [];
-        $model = User::find()->all();
+        $users = [];
+        $model = self::find()->all();
         if ($model) {
             foreach ($model as $m) {
-                $name = ($m->last_name) ? $m->first_name ." ".$m->last_name." (".$m->id.")" : $m->first_name . " (".$m->id.")";
-                $user[$m->id] = $name;
+                $name = ($m->last_name) ? $m->first_name . " " . $m->last_name : $m->first_name;
+                if ($show_id) {
+                    $name .= " (".$m->id.")";
+                }
+                $users[$m->id] = $name;
             }
         }
-        return $user;
+
+        return $users;
     }
 }
