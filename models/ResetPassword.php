@@ -13,10 +13,11 @@ use yii\base\Model;
 use Yii;
 
 /**
- * Password reset
+ * Восстановление пароля
  */
 class ResetPassword extends Model
 {
+    // Новый пароль
     public $password;
 
     /**
@@ -25,9 +26,9 @@ class ResetPassword extends Model
     private $_user;
 
     /**
-     * @param array $token
-     * @param $password
-     * @param array $config
+     * @param array $token - токен
+     * @param $password - пароль
+     * @param array $config - праметры
      */
     public function __construct($token, $password, $config = [])
     {
@@ -46,13 +47,14 @@ class ResetPassword extends Model
     }
 
     /**
-     * @return bool|int|mixed
+     * Сброс пароля на новый
+     * @return bool|int
      */
     public function resetPassword()
     {
         $user = $this->_user;
         $user->setPassword($this->password);
-        $user->removePasswordResetToken();
+        $user->removePasswordResetToken();  // Удаление токена восстановления пароля
 
         return (($user->save())) ? $user->id : false;
     }
