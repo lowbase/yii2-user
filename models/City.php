@@ -11,7 +11,7 @@ namespace lowbase\user\models;
 use Yii;
 
 /**
- * This is the model class for table "city".
+ * Города
  *
  * @property integer $id
  * @property integer $country_id
@@ -23,7 +23,8 @@ use Yii;
 class City extends \yii\db\ActiveRecord
 {
     /**
-     * @inheritdoc
+     * Наименование таблицы
+     * @return string
      */
     public static function tableName()
     {
@@ -31,22 +32,24 @@ class City extends \yii\db\ActiveRecord
     }
 
     /**
-     * @inheritdoc
+     * Правила валидации
+     * @return array
      */
     public function rules()
     {
         return [
-            [['country_id', 'city', 'region'], 'required'],
-            [['country_id', 'biggest_city'], 'integer'],
-            [['city', 'state', 'region'], 'string', 'max' => 255],
-            ['biggest_city', 'default', 'value' => 0],
-            [['state'], 'default', 'value' => null],
-            [['city', 'region', 'state'], 'filter', 'filter' => 'trim'],
+            [['country_id', 'city', 'region'], 'required'], // Обязательные для заполнения
+            [['country_id', 'biggest_city'], 'integer'],    // Целочисленные значения
+            [['city', 'state', 'region'], 'string', 'max' => 255],  //  Строковые значения (не более 255 символов)
+            [['city', 'region', 'state'], 'filter', 'filter' => 'trim'], // Обрезаем строки по краям
+            ['biggest_city', 'default', 'value' => 0],  // Значение по умолчанию = 0
+            [['state'], 'default', 'value' => null],    // Значения по умолчанию = null
         ];
     }
 
     /**
-     * @inheritdoc
+     * Наименования полей аттрибутов
+     * @return array
      */
     public function attributeLabels()
     {
@@ -61,6 +64,7 @@ class City extends \yii\db\ActiveRecord
     }
 
     /**
+     * Пользователи из города
      * @return \yii\db\ActiveQuery
      */
     public function getUsers()
@@ -69,17 +73,20 @@ class City extends \yii\db\ActiveRecord
     }
 
     /**
+     * Страна текущего города
      * @return \yii\db\ActiveQuery
      */
     public function getCountry()
     {
         return $this->hasOne(Country::className(), ['id' => 'country_id']);
     }
-    
+
     /**
      * Список регионов страны
+     * @param $country_id - страны
+     * @return array
      */
-    public function Regions($country_id)
+    public static function regions($country_id)
     {
         $region = [];
         $city = City::find()
@@ -89,7 +96,7 @@ class City extends \yii\db\ActiveRecord
             ->all();
         if ($city) {
             foreach ($city as $c) {
-                $region[$c->id] = $c->region;
+                $region[$c->region] = $c->region;
             }
         }
         return $region;
