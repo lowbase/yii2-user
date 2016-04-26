@@ -14,6 +14,8 @@ use yii\data\ActiveDataProvider;
 
 /**
  * Поиск по странам
+ * Class CountrySearch
+ * @package lowbase\user\models
  */
 class CountrySearch extends Country
 {
