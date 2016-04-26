@@ -12,6 +12,11 @@ use yii\base\InvalidParamException;
 use yii\base\Model;
 use Yii;
 
+/**
+ * Подтверждение электронной почты
+ * Class EmailConfirm
+ * @package lowbase\user\models
+ */
 class EmailConfirm extends Model
 {
     /**
@@ -20,10 +25,9 @@ class EmailConfirm extends Model
     private $_user;
 
     /**
-     * Creates a form model given a token.
-     * @param  string $token
-     * @param  array $config
-     * @throws \yii\base\InvalidParamException if token is empty or not valid
+     * @param  string $token - токен
+     * @param  array $config - параметры
+     * @throws \yii\base\InvalidParamException - при пустом или неправильном токене
      */
     public function __construct($token, $config = [])
     {
@@ -38,13 +42,14 @@ class EmailConfirm extends Model
     }
 
     /**
+     * Подтверждение электронной почты
      * @return bool|int
      */
     public function confirmEmail()
     {
         $user = $this->_user;
         $user->status = User::STATUS_ACTIVE;
-        $user->removeEmailConfirmToken();
+        $user->removeEmailConfirmToken();   // Удаление токена подтверждения электронной почты
 
         return (($user->save())) ? $user->id : false;
     }
