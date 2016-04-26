@@ -66,6 +66,7 @@ class User extends ActiveRecord implements IdentityInterface
     public $photo;  // аватар (само изображение)
 
     /**
+     * Название таблицы
      * @return string
      */
     public static function tableName()
@@ -433,7 +434,7 @@ class User extends ActiveRecord implements IdentityInterface
                 Image::thumbnail($this->photo->tempName, 200, 200)->save($this->image);   // Сохраняем изображение в формате 200x200 пикселей
             } else {
                 // Загружено по ссылке с удаленного сервера
-                file_put_contents($this->image, $this->photo);
+                move_uploaded_file($this->photo, $this->name);
             }
             $this::getDb()
                 ->createCommand()
