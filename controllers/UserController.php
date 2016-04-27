@@ -26,8 +26,12 @@ use yii\web\NotFoundHttpException;
 
 /**
  * Пользователи
+ *
  * Абсолютные пути Views использованы, чтобы при наследовании
  * происходила связь с отображениями модуля родителя.
+ *
+ * Class UserController
+ * @package lowbase\user\controllers
  */
 class UserController extends Controller
 {
@@ -84,6 +88,7 @@ class UserController extends Controller
      */
     public function actionSignup()
     {
+        // Уже авторизированных отправляем на домашнюю страницу
         if (!\Yii::$app->user->isGuest) {
             return $this->goHome();
         }
@@ -105,6 +110,7 @@ class UserController extends Controller
      */
     public function actionLogin()
     {
+        // Уже авторизированных отправляем на домашнюю страницу
         if (!\Yii::$app->user->isGuest) {
             return $this->goHome();
         }
@@ -117,7 +123,7 @@ class UserController extends Controller
         //Восстановление пароля
         $forget = new PasswordResetForm();
         if ($forget->load(Yii::$app->request->post()) && $forget->validate()) {
-            if ($forget->sendEmail()) {
+            if ($forget->sendEmail()) { // Отправлено подтверждение по Email
                 Yii::$app->getSession()->setFlash('success', Yii::t('user', 'Ссылка с активацией нового пароля отправлена на Email.'));
             }
             return $this->goBack(['login']);
@@ -142,7 +148,7 @@ class UserController extends Controller
     /**
      * Подтверждение аккаунта с помощью
      * электронной почты
-     * @param $token
+     * @param $token - токен подтверждения, высылаемый почтой
      * @return \yii\web\Response
      * @throws BadRequestHttpException
      */
@@ -154,6 +160,7 @@ class UserController extends Controller
             throw new BadRequestHttpException($e->getMessage());
         }
         if ($user_id = $model->confirmEmail()) {
+            // Авторизируемся при успешном подтверждении
             Yii::$app->user->login(User::findIdentity($user_id));
         }
 
@@ -161,10 +168,9 @@ class UserController extends Controller
     }
 
     /**
-     * Сброс пароля через электронную
-     * почту
-     * @param $token
-     * @param $password
+     * Сброс пароля через электронную почту
+     * @param $token - токен сброса пароля, высылаемый почтой
+     * @param $password - новый пароль
      * @return \yii\web\Response
      * @throws BadRequestHttpException
      */
@@ -176,6 +182,7 @@ class UserController extends Controller
             throw new BadRequestHttpException($e->getMessage());
         }
         if ($user_id = $model->resetPassword()) {
+            // Авторизируемся при успешном сбросе пароля
             Yii::$app->user->login(User::findIdentity($user_id));
         }
 
@@ -183,7 +190,7 @@ class UserController extends Controller
     }
 
     /**
-     * Профиль пользователя
+     * Профиль пользователя (личный кабинет)
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException
      */
@@ -194,11 +201,13 @@ class UserController extends Controller
         if ($model === null) {
             throw new NotFoundHttpException(Yii::t('user', 'Запрошенная страница не найдена.'));
         }
+        // Преобразуем дату в понятный формат
         if ($model->birthday) {
             $date = new \DateTime($model->birthday);
             $model->birthday = $date->format('d.m.Y');
         }
         if ($model->load(Yii::$app->request->post())) {
+            // Получаем изображение, если оно есть
             $model->photo = UploadedFile::getInstance($model, 'photo');
             if ($model->save()) {
                 Yii::$app->getSession()->setFlash('success', Yii::t('user', 'Данные профиля обновлены.'));
@@ -211,6 +220,14 @@ class UserController extends Controller
 
     }
 
+    /**
+     * Пользовательское открытое отображение
+     * профиля пользователя
+     *
+     * @param $id - ID пользователя
+     * @return string
+     * @throws NotFoundHttpException
+     */
     public function actionShow($id)
     {
         $model = $this->findModel($id);
@@ -220,7 +237,9 @@ class UserController extends Controller
     }
 
     /**
-     * @param $id
+     * Фиксирование пользователя Онлайн
+     * Используется onlineWidget посредством
+     * Ajax-запросов
      */
     public function actionOnline()
     {
@@ -228,15 +247,15 @@ class UserController extends Controller
     }
 
     /**
-     * Удаление изображения пользователя
-     * @return bool
+     * Удаление собственной аватарки
+     * @return \yii\web\Response
      */
     public function actionRemove()
     {
         /** @var \lowbase\user\models\forms\ProfileForm $model */
         $model = ProfileForm::findOne(Yii::$app->user->id);
         if ($model !== null) {
-            $model->removeImage();
+            $model->removeImage();  // Удаление изображения
             Yii::$app->getSession()->setFlash('success', Yii::t('user', 'Изображение удалено.'));
         }
 
@@ -244,12 +263,12 @@ class UserController extends Controller
     }
 
     /**
-     * Администрирование
-     * -----------------
+     * Административная часть
+     * ----------------------
      */
 
     /**
-     * Менеджер пользователей
+     * Менеджер пользователей (список таблицей)
      * @return string
      */
     public function actionIndex()
@@ -264,10 +283,10 @@ class UserController extends Controller
     }
 
     /**
-     * Просмотр карточки
-     * пользователя
-     * @param $id
+     * Просмотр пользователя (карточки)
+     * @param $id - ID пользователя
      * @return string
+     * @throws NotFoundHttpException
      */
     public function actionView($id)
     {
@@ -277,9 +296,9 @@ class UserController extends Controller
     }
 
     /**
-     * Редактирование профиля пользователя
-     * в режиме администрирования
-     * @param $id
+     * Редактирование пользователя в режиме
+     * администрирования (по аналогии с личным кабинетом)
+     * @param $id - ID пользователя
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException
      */
@@ -290,11 +309,13 @@ class UserController extends Controller
         if ($model === null) {
             throw new NotFoundHttpException(Yii::t('user', 'Запрошенная страница не найдена.'));
         }
+        // Преобразуем дату в понятный формат
         if ($model->birthday) {
             $date = new \DateTime($model->birthday);
             $model->birthday = $date->format('d.m.Y');
         }
         if ($model->load(Yii::$app->request->post())) {
+            // Загружаем изображение, если оно есть
             $model->photo = UploadedFile::getInstance($model, 'photo');
             if ($model->save()) {
                 Yii::$app->getSession()->setFlash('success', Yii::t('user', 'Данные профиля обновлены.'));
@@ -308,8 +329,8 @@ class UserController extends Controller
     }
 
     /**
-     * Удаление профиля пользователя
-     * @param $id
+     * Удаление пользователя
+     * @param $id - ID пользователя
      * @return \yii\web\Response
      * @throws NotFoundHttpException
      */
@@ -322,8 +343,9 @@ class UserController extends Controller
     }
 
     /**
-     * Удаление чужого фото
-     * @param $id
+     * Удаление аватарки пользователя по
+     * его ID (чужой аватарки)
+     * @param $id - ID пользователя
      * @return \yii\web\Response
      */
     public function actionRmv($id)
@@ -340,6 +362,7 @@ class UserController extends Controller
 
     /**
      * Множественная активация пользователей
+     * Перевод в статус STATUS_ACTIVE
      * @return bool
      * @throws NotFoundHttpException
      */
@@ -351,7 +374,7 @@ class UserController extends Controller
                 if ($id != Yii::$app->user->id) {
                     /** @var \lowbase\user\models\User $model */
                     $model = $this->findModel($id);
-                    $model->status = 1;
+                    $model->status = User::STATUS_ACTIVE;
                     $model->save();
                 }
             }
@@ -362,6 +385,7 @@ class UserController extends Controller
 
     /**
      * Множественная блокировка пользователей
+     * Перевод в статус STATUS_BLOCKED
      * @return bool
      * @throws NotFoundHttpException
      */
@@ -373,7 +397,7 @@ class UserController extends Controller
                 if ($id != Yii::$app->user->id) {
                     /** @var \lowbase\user\models\User $model */
                     $model = $this->findModel($id);
-                    $model->status = 0;
+                    $model->status = User::STATUS_BLOCKED;
                     $model->save();
                 }
             }
@@ -396,7 +420,7 @@ class UserController extends Controller
                 if ($id != Yii::$app->user->id) {
                     /** @var \lowbase\user\models\User $user */
                     $user = $this->findModel($id);
-                    $user->removeImage();
+                    $user->removeImage(); // Удаление аватарки с сервера
                     $user->delete();
                 }
             }
@@ -406,8 +430,8 @@ class UserController extends Controller
     }
 
     /**
-     * Поиск пользователя по артикулу
-     * @param $id
+     * Поиск пользователя по ID
+     * @param $id - ID пользователя
      * @return null|static
      * @throws NotFoundHttpException
      */
