@@ -18,38 +18,40 @@ use Yii;
  */
 class SignupForm extends User
 {
-    public $password;
-    public $captcha;
+    public $password;   // Пароль
+    public $captcha;    // Капча
 
     /**
-     * @return array the validation rules.
+     * Правила валидации
+     * @return array
      */
     public function rules()
     {
         return [
-            [['first_name', 'password', 'email', 'captcha'], 'required'],
+            [['first_name', 'password', 'email', 'captcha'], 'required'],   // Обязательные поля
             ['email', 'unique', 'targetClass' => self::className(),
-                'message' => Yii::t('user', 'Данный Email уже зарегистрирован.')],
-            ['email', 'email'],
-            ['captcha', 'captcha', 'captchaAction' => '/user/default/captcha'],
-            [['password'], 'string', 'min' => 4],
-            [['sex', 'country_id', 'city_id', 'status'], 'integer'],
-            [['birthday', 'login_at'], 'safe'],
-            [['first_name', 'last_name', 'email', 'phone'], 'string', 'max' => 100],
-            [['auth_key'], 'string', 'max' => 32],
-            [['ip'], 'string', 'max' => 20],
-            [['password_hash', 'password_reset_token', 'email_confirm_token', 'image', 'address'], 'string', 'max' => 255],
-            ['status', 'in', 'range' => array_keys(self::getStatusArray())],
-            ['status', 'default', 'value' => self::STATUS_WAIT],
-            ['sex', 'in', 'range' => array_keys(self::getSexArray())],
-            [['first_name', 'last_name', 'email', 'phone', 'address'], 'filter', 'filter' => 'trim'],
+                'message' => Yii::t('user', 'Данный Email уже зарегистрирован.')],  // Электронная почта должна быть уникальна
+            ['email', 'email'], // Электронная почта
+            ['captcha', 'captcha', 'captchaAction' => '/user/default/captcha'], // Проверка капчи
+            [['password'], 'string', 'min' => 4],   // Пароль минимум 4 символа
+            [['sex', 'country_id', 'city_id', 'status'], 'integer'],    // Целочисленные значения
+            [['birthday', 'login_at'], 'safe'], // Безопасные аттрибуты
+            [['first_name', 'last_name', 'email', 'phone'], 'string', 'max' => 100],    // Строка (максимум 100 символов)
+            [['auth_key'], 'string', 'max' => 32],  // Строка (максимум 32 символа)
+            [['ip'], 'string', 'max' => 20],    // Строка (максимуму 20 символов)
+            [['password_hash', 'password_reset_token', 'email_confirm_token', 'image', 'address'], 'string', 'max' => 255], // Строка (максимум 255 символов)
+            ['status', 'in', 'range' => array_keys(self::getStatusArray())], // Статус должен быть из списка статусов
+            ['status', 'default', 'value' => self::STATUS_WAIT],    // Статус после регистрации "Ожидает подтверждения"
+            ['sex', 'in', 'range' => array_keys(self::getSexArray())],  // Пол должен быть из гендерного списка
+            [['first_name', 'last_name', 'email', 'phone', 'address'], 'filter', 'filter' => 'trim'],   // Обрезаем строки по краям
             [['last_name', 'password_reset_token', 'email_confirm_token',
                 'image', 'sex', 'phone', 'country_id', 'city_id', 'address',
-                'auth_key', 'password_hash', 'email', 'ip', 'login_at'], 'default', 'value' => null],
+                'auth_key', 'password_hash', 'email', 'ip', 'login_at'], 'default', 'value' => null],   // По умолчанию значение = null
         ];
     }
 
     /**
+     * Наименования дополнительных полей формы
      * @return array
      */
     public function attributeLabels()
@@ -61,8 +63,9 @@ class SignupForm extends User
     }
 
     /**
+     * Генерация ключа авторизации, токена подтверждения регистрации
+     * и хеширование пароля перед сохранением
      * @param bool $insert
-     * @param $changedAttributes
      * @return bool
      */
     public function beforeSave($insert)
@@ -77,6 +80,8 @@ class SignupForm extends User
     }
 
     /**
+     * Отправка письма согласно шаблону "confirmEmail"
+     * после регистрации
      * @param bool $insert
      * @param array $changedAttributes
      */
