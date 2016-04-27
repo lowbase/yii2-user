@@ -11,10 +11,16 @@ namespace lowbase\user\components\oauth;
 use lowbase\user\models\User;
 use lowbase\user\models\UserOauthKey;
 
+/**
+ * Авторизация через GitHub
+ * Class GitHub
+ * @package lowbase\user\components\oauth
+ */
 class GitHub extends \yii\authclient\clients\GitHub
 {
     /**
-     * @inheritdoc
+     * Размеры Popap-окна
+     * @return array
      */
     public function getViewOptions()
     {
@@ -25,7 +31,7 @@ class GitHub extends \yii\authclient\clients\GitHub
     }
 
     /**
-     * @inheritdoc
+     * Инициализация
      */
     public function init()
     {
@@ -39,7 +45,9 @@ class GitHub extends \yii\authclient\clients\GitHub
     }
 
     /**
-     * @inheritdoc
+     * Получение аттрибутов
+     * @return array
+     * @throws \yii\base\Exception
      */
     protected function initUserAttributes()
     {
