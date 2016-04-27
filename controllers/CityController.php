@@ -17,9 +17,13 @@ use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
 
 /**
- * CityController implements the CRUD actions for City model.
+ * Города
+ * 
  * Абсолютные пути Views использованы, чтобы при наследовании
  * происходила связь с отображениями модуля родителя.
+ * 
+ * Class CityController
+ * @package lowbase\user\controllers
  */
 class CityController extends Controller
 {
@@ -64,24 +68,27 @@ class CityController extends Controller
     }
 
     /**
-     * Поиск населенного пункта по имени
-     * @param null $q
-     * @param null $id
-     * @return array|null
+     * Поиск населенного пункта по названию или ID
+     * @param null $q - часть названия или целиком
+     * @param null $id - ID населенного пункта ( в случае поиска по ID
+     * @return array [ID => 'Город (Район, Регион)']
      */
     public function actionFind($q = null, $id = null)
     {
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $out = ['results' => ['id' => '', 'text' => '']];
+        
         if (!is_null($q)) {
             $query = new Query();
             $query->select('id, city, state, region')
                 ->from('lb_city')
                 ->where(['like', 'city', $q])
                 ->limit(1000);
+            
             $command = $query->createCommand();
             $data = $command->queryAll();
             $format_data = [];
+            
             foreach ($data as $d) {
                 $format_data[] = [
                     'id' => $d['id'],
@@ -89,16 +96,18 @@ class CityController extends Controller
                         $d['state'] . ", " .
                         $d['region'] . ")"];
             }
+            
             $out['results'] = array_values($format_data);
         } elseif ($id > 0) {
             $out['results'] = ['id' => $id, 'text' => City::find($id)->city];
         }
+        
         return $out;
     }
 
     /**
-     * Lists all City models.
-     * @return mixed
+     * Менеджер населенных пунктов (вывод таблицей)
+     * @return string
      */
     public function actionIndex()
     {
@@ -112,9 +121,10 @@ class CityController extends Controller
     }
 
     /**
-     * Displays a single City model.
-     * @param integer $id
-     * @return mixed
+     * Отображение населенного пункта
+     * @param $id - ID населенного пункта
+     * @return string
+     * @throws NotFoundHttpException
      */
     public function actionView($id)
     {
@@ -124,9 +134,8 @@ class CityController extends Controller
     }
 
     /**
-     * Creates a new City model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
+     * Создание населенного пункта
+     * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
@@ -143,10 +152,10 @@ class CityController extends Controller
     }
 
     /**
-     * Updates an existing City model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
+     * Редактирование населенного пункта
+     * @param $id
+     * @return string|\yii\web\Response
+     * @throws NotFoundHttpException
      */
     public function actionUpdate($id)
     {
@@ -163,10 +172,10 @@ class CityController extends Controller
     }
 
     /**
-     * Deletes an existing City model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
+     * Удаление населенного пункта
+     * @param $id
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException
      */
     public function actionDelete($id)
     {
@@ -177,7 +186,7 @@ class CityController extends Controller
     }
 
     /**
-     * Множественное удаление городов
+     * Множественное удаление населенных пунктов
      * @return bool
      * @throws NotFoundHttpException
      */
@@ -190,12 +199,12 @@ class CityController extends Controller
             }
             Yii::$app->getSession()->setFlash('success', Yii::t('user', 'Города удалены.'));
         }
+        
         return true;
     }
 
     /**
-     * Finds the City model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
+     * Поиск модели (насленного пункта) по ID
      * @param integer $id
      * @return City the loaded model
      * @throws NotFoundHttpException if the model cannot be found
