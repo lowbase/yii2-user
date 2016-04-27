@@ -11,8 +11,17 @@ namespace lowbase\user\components\oauth;
 use lowbase\user\models\User;
 use lowbase\user\models\UserOauthKey;
 
+/**
+ * Авторизация с помощью Twitter
+ * Class Twitter
+ * @package lowbase\user\components\oauth\
+ */
 class Twitter extends \yii\authclient\clients\Twitter
 {
+    /**
+     * Размеры Popap-окна
+     * @return array
+     */
     public function getViewOptions()
     {
         return [
@@ -22,7 +31,9 @@ class Twitter extends \yii\authclient\clients\Twitter
     }
 
     /**
-     * @inheritdoc
+     * Получение аттрибутов
+     * @return array
+     * @throws \yii\base\Exception
      */
     protected function initUserAttributes()
     {
