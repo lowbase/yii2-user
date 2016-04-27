@@ -11,9 +11,18 @@ namespace lowbase\user\components\oauth;
 use lowbase\user\models\User;
 use lowbase\user\models\UserOauthKey;
 
+/**
+ * Авторизация с помощью Яндекса
+ * Class Yandex
+ * @package lowbase\user\components\oauth
+ */
 class Yandex extends \yii\authclient\clients\YandexOAuth
 {
 
+    /**
+     * Размеры Popap-окна
+     * @return array
+     */
     public function getViewOptions()
     {
         return [
@@ -22,6 +31,10 @@ class Yandex extends \yii\authclient\clients\YandexOAuth
         ];
     }
 
+    /**
+     * Преобразование пола
+     * @return array
+     */
     public function normalizeSex()
     {
         return [
@@ -31,7 +44,9 @@ class Yandex extends \yii\authclient\clients\YandexOAuth
     }
 
     /**
-     * @inheritdoc
+     * Получение аттрибутов
+     * @return array
+     * @throws \yii\base\Exception
      */
     protected function initUserAttributes()
     {
