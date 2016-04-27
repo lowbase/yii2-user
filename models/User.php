@@ -408,8 +408,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function afterLogin($id)
     {
-        $db = self::getDb();
-        $db->createCommand()->update('lb_user', [
+        self::getDb()->createCommand()->update(self::tableName(), [
             'ip' => $_SERVER["REMOTE_ADDR"],
             'login_at' => date('Y-m-d H:i:s')
         ], ['id' => $id])->execute();
