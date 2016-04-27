@@ -11,10 +11,16 @@ namespace lowbase\user\components\oauth;
 use lowbase\user\models\User;
 use lowbase\user\models\UserOauthKey;
 
+/**
+ * Авторизация с помощью Вконтакте
+ * Class VKontakte
+ * @package lowbase\user\components\oauth
+ */
 class VKontakte extends \yii\authclient\clients\VKontakte
 {
     /**
-     * @inheritdoc
+     * Размеры Popap-окна
+     * @return array
      */
     public function getViewOptions()
     {
@@ -24,6 +30,10 @@ class VKontakte extends \yii\authclient\clients\VKontakte
         ];
     }
 
+    /**
+     * Преобразование пола
+     * @return array
+     */
     public function normalizeSex()
     {
         return [
@@ -33,7 +43,9 @@ class VKontakte extends \yii\authclient\clients\VKontakte
     }
 
     /**
-     * @inheritdoc
+     * Получение аттрибутов
+     * @return array
+     * @throws \yii\base\Exception
      */
     protected function initUserAttributes()
     {
