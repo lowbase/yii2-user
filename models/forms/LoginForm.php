@@ -44,7 +44,7 @@ class LoginForm extends Model
     }
 
     /**
-     * Наименование полей аттрибутов
+     * Наименование полей формы
      * @return array
      */
     public function attributeLabels()
