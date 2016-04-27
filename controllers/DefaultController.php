@@ -11,10 +11,17 @@ namespace lowbase\user\controllers;
 use yii\web\Controller;
 
 /**
- * Default controller for the `user` module
+ * Основной контроллер модуля
+ * 
+ * Class DefaultController
+ * @package lowbase\user\controllers
  */
 class DefaultController extends Controller
 {
+    /**
+     * Настраиваем страницу ошибки и капчу
+     * @return array
+     */
     public function actions()
     {
         return [
