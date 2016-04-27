@@ -18,28 +18,30 @@ use yii\base\Model;
  */
 class PasswordResetForm extends Model
 {
-    public $email;
-    public $password;
-    public $captcha;
+    public $email;      // Электронная почта
+    public $password;   // Пароль
+    public $captcha;    // Капча
 
     /**
-     * @inheritdoc
+     * Правила валидации
+     * @return array
      */
     public function rules()
     {
         return [
-            [['email', 'password', 'captcha'], 'required'],
-            [['password'], 'string', 'min' => 4],
-            ['email', 'email'],
+            [['email', 'password', 'captcha'], 'required'], // Обязательны для заполнения
+            [['password'], 'string', 'min' => 4],   // Пароль минимум 4 символа
+            ['email', 'email'], // Электронная почта
             ['email', 'exist',
                 'targetClass' => '\lowbase\user\models\User',
                 'message' => \Yii::t('user', 'Пользователь с таким Email не зарегистрирован.')
-            ],
-            ['captcha', 'captcha', 'captchaAction' => '/user/default/captcha'],
+            ],  // Значение электронной почты должно присутствовать в базе данных
+            ['captcha', 'captcha', 'captchaAction' => '/user/default/captcha'], // Проверка капчи
         ];
     }
 
     /**
+     * Наименования полей формы
      * @return array
      */
     public function attributeLabels()
@@ -59,15 +61,14 @@ class PasswordResetForm extends Model
     public function sendEmail()
     {
         /* @var $user User */
-        $user =  User::find()->where([
-            'email' => $this->email,
-        ])->one();
+        $user = User::findByEmail($this->email);
 
         if ($user) {
             if (!User::isPasswordResetTokenValid($user->password_reset_token)) {
                 $user->generatePasswordResetToken();
             }
             if ($user->save()) {
+                // Отправка по шаблону письма "passwordResetToken"
                 return \Yii::$app->mailer->compose(\Yii::$app->controller->module->getCustomMailView('passwordResetToken', 'passwordResetToken'), [
                     'model' => $user,
                     'password' => $this->password
