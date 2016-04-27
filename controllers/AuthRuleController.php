@@ -16,9 +16,13 @@ use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
 
 /**
- * AuthRuleController implements the CRUD actions for AuthRule model.
+ * Правила допусков
+ * 
  * Абсолютные пути Views использованы, чтобы при наследовании
  * происходила связь с отображениями модуля родителя.
+ * 
+ * Class AuthRuleController
+ * @package lowbase\user\controllers
  */
 class AuthRuleController extends Controller
 {
@@ -58,24 +62,25 @@ class AuthRuleController extends Controller
     }
 
     /**
-     * Lists all AuthRule models.
-     * @return mixed
+     * Менеджер правил (список таблицей)
+     * @return string
      */
     public function actionIndex()
     {
         $searchModel = new AuthRuleSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
+        return $this->render('@vendor/lowbase/yii2-user/views/auth-rule/index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
 
     /**
-     * Displays a single AuthRule model.
-     * @param string $id
-     * @return mixed
+     * Отображение правила
+     * @param $id - ID правила
+     * @return string
+     * @throws NotFoundHttpException
      */
     public function actionView($id)
     {
@@ -85,9 +90,8 @@ class AuthRuleController extends Controller
     }
 
     /**
-     * Creates a new AuthRule model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
+     * Создание правила
+     * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
@@ -104,10 +108,10 @@ class AuthRuleController extends Controller
     }
 
     /**
-     * Deletes an existing AuthRule model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param string $id
-     * @return mixed
+     * Удаление правила
+     * @param $id
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException
      */
     public function actionDelete($id)
     {
@@ -116,7 +120,6 @@ class AuthRuleController extends Controller
 
         return $this->redirect(['index']);
     }
-
 
     /**
      * Множественное удаление правил
@@ -136,8 +139,7 @@ class AuthRuleController extends Controller
     }
 
     /**
-     * Finds the AuthRule model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
+     * Поиск модели правил по ID
      * @param string $id
      * @return AuthRule the loaded model
      * @throws NotFoundHttpException if the model cannot be found
