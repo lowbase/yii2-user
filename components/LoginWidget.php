@@ -11,9 +11,15 @@ namespace app\modules\user\components;
 use lowbase\user\models\forms\LoginForm;
 use yii\base\Widget;
 
+/**
+ * Виджет авторизации (входа на сайт)
+ * 
+ * Class LoginWidget
+ * @package app\modules\user\components
+ */
 class LoginWidget extends Widget
 {
-    public $oauth = true;
+    public $oauth = true;   // Авторизация с помощью соц. сетей
 
     public function run()
     {
