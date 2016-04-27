@@ -11,10 +11,16 @@ namespace lowbase\user\components\oauth;
 use lowbase\user\models\User;
 use lowbase\user\models\UserOauthKey;
 
+/**
+ * Авторизация через Facebook
+ * Class Facebook
+ * @package lowbase\user\components\oauth
+ */
 class Facebook extends \yii\authclient\clients\Facebook
 {
     /**
-     * @inheritdoc
+     * Размеры Popap-окна
+     * @return array
      */
     public function getViewOptions()
     {
@@ -24,6 +30,10 @@ class Facebook extends \yii\authclient\clients\Facebook
         ];
     }
 
+    /**
+     * Преобразование пола
+     * @return array
+     */
     public function normalizeSex()
     {
         return [
@@ -33,7 +43,9 @@ class Facebook extends \yii\authclient\clients\Facebook
     }
 
     /**
-     * @inheritdoc
+     * Инициализация аттрибутов
+     * @return array
+     * @throws \yii\base\Exception
      */
     protected function initUserAttributes()
     {
