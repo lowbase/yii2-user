@@ -11,10 +11,16 @@ namespace lowbase\user\components\oauth;
 use lowbase\user\models\User;
 use lowbase\user\models\UserOauthKey;
 
+/**
+ * Авторизация через Google plus
+ * Class Google
+ * @package lowbase\user\components\oauth
+ */
 class Google extends \yii\authclient\clients\GoogleOAuth
 {
     /**
-     * @inheritdoc
+     * Размеры Popap-окна
+     * @return array
      */
     public function getViewOptions()
     {
@@ -23,7 +29,11 @@ class Google extends \yii\authclient\clients\GoogleOAuth
             'popupHeight' => 500
         ];
     }
-
+    
+    /**
+     * Преобразование пола
+     * @return array
+     */
     public function normalizeSex()
     {
         return [
@@ -33,7 +43,7 @@ class Google extends \yii\authclient\clients\GoogleOAuth
     }
 
     /**
-     * @inheritdoc
+     * Инициализация
      */
     public function init()
     {
@@ -47,7 +57,9 @@ class Google extends \yii\authclient\clients\GoogleOAuth
     }
 
     /**
-     * @inheritdoc
+     * Получение аттрибутов
+     * @return array
+     * @throws \yii\base\Exception
      */
     protected function initUserAttributes()
     {
