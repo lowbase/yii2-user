@@ -14,6 +14,8 @@ use yii\data\ActiveDataProvider;
 
 /**
  * Поиск правил допусков
+ * Class AuthRuleSearch
+ * @package lowbase\user\models
  */
 class AuthRuleSearch extends AuthRule
 {
