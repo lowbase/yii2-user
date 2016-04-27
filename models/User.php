@@ -125,7 +125,8 @@ class User extends ActiveRecord implements IdentityInterface
             [['sex', 'country_id', 'city_id', 'status'], 'integer'],    // Только целочисленные значения
             [['birthday', 'login_at'], 'safe'], // Безопасные аттрибуты (любые значения) - преобразуются автоматически
             [['first_name', 'last_name', 'email', 'phone'], 'string', 'max' => 100],    // Строки до 100 символов
-            [['auth_key', 'ip'], 'string', 'max' => 32],  // Строка до 32 символов
+            [['auth_key'], 'string', 'max' => 32],  // Строка до 32 символов
+            [['ip'], 'string', 'max' => 20],    // Строковое значение (максимум 20 симоволов)
             [['password_hash', 'password_reset_token', 'email_confirm_token', 'image', 'address'], 'string', 'max' => 255], // Строки до 255 символов
             ['status', 'in', 'range' => array_keys(self::getStatusArray())],    // Статус возможен только из списка статусов
             ['status', 'default', 'value' => self::STATUS_ACTIVE],  // По умолчанию статус "Активен"
@@ -434,7 +435,7 @@ class User extends ActiveRecord implements IdentityInterface
                 Image::thumbnail($this->photo->tempName, 200, 200)->save($this->image);   // Сохраняем изображение в формате 200x200 пикселей
             } else {
                 // Загружено по ссылке с удаленного сервера
-                file_put_contents($this->image, $this->photo);
+                move_uploaded_file($this->photo, $this->name);
             }
             $this::getDb()
                 ->createCommand()
