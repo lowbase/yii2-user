@@ -19,29 +19,32 @@ use yii\base\Model;
  */
 class LoginForm extends Model
 {
-    public $email;
-    public $password;
-    public $rememberMe = true;
+    public $email;              // Электронная почта
+    public $password;           // Пароль
+    public $rememberMe = true;  // Запомнить меня
 
     private $_user = false;
 
     /**
-     * @return array the validation rules.
+     * Правила валидации
+     * @return array
      */
     public function rules()
     {
         return [
-            // username and password are both required
+            // И Email и пароль должны быть заполнены
             [['email', 'password'], 'required'],
-            // rememberMe must be a boolean value
+            // Булево значение (галочка)
             ['rememberMe', 'boolean'],
-            // password is validated by validatePassword()
+            // Валидация пароля из метода "validatePassword"
             ['password', 'validatePassword'],
+            // Электронная почта
             ['email', 'email'],
         ];
     }
 
     /**
+     * Наименование полей аттрибутов
      * @return array
      */
     public function attributeLabels()
@@ -54,7 +57,7 @@ class LoginForm extends Model
     }
 
     /**
-     * Проверка пароля
+     * Проверка комбинации Email - Пароль
      * @param $attribute
      */
     public function validatePassword($attribute)
@@ -74,7 +77,7 @@ class LoginForm extends Model
     }
 
     /**
-     * Авторзиация
+     * Авторизация
      * @return bool
      */
     public function login()
@@ -86,6 +89,7 @@ class LoginForm extends Model
     }
 
     /**
+     * Получение модели пользователя
      * @return bool|null|static
      */
     public function getUser()
