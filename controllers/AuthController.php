@@ -13,6 +13,14 @@ use lowbase\user\models\User;
 use lowbase\user\models\UserOauthKey;
 use yii\web\Controller;
 
+/**
+ * Авторизация и регстрация через
+ * соц. сети. Прикрепление и открепление
+ * ключей авторизации
+ * 
+ * Class AuthController
+ * @package lowbase\user\controllers
+ */
 class AuthController extends Controller
 {
     /**
@@ -45,7 +53,7 @@ class AuthController extends Controller
 
     /**
      * Результат успешной авторизации с помощью социальной сети
-     * @param $client
+     * @param $client - социальная сеть, через которую происходит авторизация
      * @return bool
      */
     public function successCallback($client)
@@ -61,41 +69,42 @@ class AuthController extends Controller
         ]);
 
         if ($key) {
-            //Ключ авторизации соц. сети найден в базе
+            // Ключ авторизации соц. сети найден в базе
             if (Yii::$app->user->isGuest) {
-                //Авторзириуемся если Гость
+                // Авторзириуемся если Гость
                 return Yii::$app->user->login($key->user, 3600 * 24 * 30);
             } else {
-                //Запрщаем авторизацию если не свой ключ
+                // Запрщаем авторизацию если не свой ключ
                 if ($key->user_id != Yii::$app->user->id) {
                     Yii::$app->session->setFlash('error', Yii::t('user', 'Данный ключ уже закреплен за другим пользователем сайта.'));
                     return true;
                 }
             }
         } else {
-            //Текущего ключа авторизации соц. сети нет в базе
+            // Текущего ключа авторизации соц. сети нет в базе
             if (Yii::$app->user->isGuest) {
                 $user = false;
                 if ($attributes['User']['email'] != null) {
-                    //Пытаемся найти пользователя в базе по почте из соц. сети
+                    // Пытаемся найти пользователя в базе по почте из соц. сети
                     $user = User::findByEmail($attributes['User']['email']);
                 }
                 if (!$user) {
-                    //Не найден пользователь с Email, создаем нового
+                    // Не найден пользователь с Email, создаем нового
                     $user = new User;
                     $user->load($attributes);
                     $user->validate();
+                    // Сохранение изображения
                     if (file_get_contents($user->photo)) {
                         $user->photo = file_get_contents($user->photo);
                     }
                     return ($user->save() && $this->createKey($attributes, $user->id) && Yii::$app->user->login($user, 3600 * 24 * 30));
                 } else {
-                    //Найден Email. Добавляем ключ и авторизируемся
+                    // Найден Email. Добавляем ключ и авторизируемся
                     return ($this->createKey($attributes, $user->id) && Yii::$app->user->login($user, 3600 * 24 * 30));
                 }
 
             } else {
-                //Добавляем ключ для авторизированного пользователя
+                // Добавляем ключ для авторизированного пользователя
                 $this->createKey($attributes, Yii::$app->user->id);
                 Yii::$app->session->setFlash('success', Yii::t('user', 'Ключ входа успешно добавлен.'));
                 return true;
@@ -106,8 +115,8 @@ class AuthController extends Controller
 
     /**
      * Создание ключа авторизации соц. сети (привязывание)
-     * @param $attributes
-     * @param $user_id
+     * @param $attributes - аттрибуты пользователя
+     * @param $user_id - ID пользователя
      * @return bool
      */
     protected function createKey($attributes, $user_id)
@@ -122,7 +131,7 @@ class AuthController extends Controller
 
     /**
      * Удлаение ключа авторизации соц. сети (отвзяывание)
-     * @param $id
+     * @param $id - ID ключа авторизации
      * @return \yii\web\Response
      */
     public function actionUnbind($id)
