@@ -5,8 +5,6 @@
  * @version   1.0.0
  */
 
-/*Профиль пользователя*/
-
 .lb-user-module-profile-image {
     margin-bottom: 20px;
 }
@@ -25,11 +23,6 @@
 
 .lb-user-module-profile-password .password {
     display: none;
-}
-
-.lb-user-module-alert .alert {
-    position: absolute;
-    z-index: 10;
 }
 
 .lb-user-module-login-widget {
