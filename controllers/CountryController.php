@@ -16,9 +16,13 @@ use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
 
 /**
- * CountryController implements the CRUD actions for Country model.
+ * Страны
+ * 
  * Абсолютные пути Views использованы, чтобы при наследовании
  * происходила связь с отображениями модуля родителя.
+ * 
+ * Class CountryController
+ * @package lowbase\user\controllers
  */
 class CountryController extends Controller
 {
@@ -63,8 +67,8 @@ class CountryController extends Controller
     }
 
     /**
-     * Lists all Country models.
-     * @return mixed
+     * Менеджер стран (список таблицей)
+     * @return string
      */
     public function actionIndex()
     {
@@ -78,9 +82,10 @@ class CountryController extends Controller
     }
 
     /**
-     * Displays a single Country model.
-     * @param integer $id
-     * @return mixed
+     * Отображение страны
+     * @param $id - ID страны
+     * @return string
+     * @throws NotFoundHttpException
      */
     public function actionView($id)
     {
@@ -90,9 +95,8 @@ class CountryController extends Controller
     }
 
     /**
-     * Creates a new Country model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
+     * Создание страны
+     * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
@@ -109,10 +113,10 @@ class CountryController extends Controller
     }
 
     /**
-     * Updates an existing Country model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
+     * Редактирование страны
+     * @param $id - ID страны
+     * @return string|\yii\web\Response
+     * @throws NotFoundHttpException
      */
     public function actionUpdate($id)
     {
@@ -129,11 +133,11 @@ class CountryController extends Controller
     }
 
     /**
-     * Deletes an existing Country model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
+     * Удаление страны
+     * @param $id - ID страны
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException
+     */ 
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
@@ -160,8 +164,7 @@ class CountryController extends Controller
     }
 
     /**
-     * Finds the Country model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
+     * Поиск модели (страны) по ID
      * @param integer $id
      * @return Country the loaded model
      * @throws NotFoundHttpException if the model cannot be found
