@@ -152,7 +152,7 @@ class m160306_230816_user extends Migration
 
         //Предустановленные значения таблицы правил auth_rule
         $this->insert('lb_auth_rule', [
-            'name' => 'noElderRank',
+            'name' => 'AuthorRule',
             'data' => 'O:29:"lowbase\user\rules\AuthorRule":3:{s:4:"name";s:10:"AuthorRule";s:9:"createdAt";N;s:9:"updatedAt";N;}',
             'created_at' => time(),
             'updated_at' => time(),
