@@ -434,7 +434,7 @@ class User extends ActiveRecord implements IdentityInterface
                 Image::thumbnail($this->photo->tempName, 200, 200)->save($this->image);   // Сохраняем изображение в формате 200x200 пикселей
             } else {
                 // Загружено по ссылке с удаленного сервера
-                move_uploaded_file($this->photo, $this->name);
+                file_put_contents($this->image, $this->photo);
             }
             $this::getDb()
                 ->createCommand()
