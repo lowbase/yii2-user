@@ -12,7 +12,7 @@ use Yii;
 use yii\behaviors\TimestampBehavior;
 
 /**
- * This is the model class for table "auth_item".
+ * Роли и допуски
  *
  * @property string $name
  * @property integer $type
@@ -32,13 +32,15 @@ use yii\behaviors\TimestampBehavior;
  */
 class AuthItem extends \yii\db\ActiveRecord
 {
-    const TYPE_ROLE = 1;
-    const TYPE_PERMISSION = 2;
+    const TYPE_ROLE = 1;        // Роль
+    const TYPE_PERMISSION = 2;  // Допуск
 
-    public $children_array = [];
-    public $user_array = [];
+    public $children_array = [];    // Дочерние роли/допуски
+    public $user_array = [];        // Пользователи, обаладающие ролью/допуском
+
     /**
-     * @inheritdoc
+     * Наименование таблицы
+     * @return string
      */
     public static function tableName()
     {
@@ -46,7 +48,8 @@ class AuthItem extends \yii\db\ActiveRecord
     }
 
     /**
-     * @inheritdoc
+     * Автозаполнение даты создания и редактирования
+     * @return array
      */
     public function behaviors()
     {
@@ -58,34 +61,43 @@ class AuthItem extends \yii\db\ActiveRecord
         ]];
     }
 
+    /**
+     * Типы записей (роль или допуск)
+     * @return array
+     */
     public static function getTypes()
     {
-        return ['1' => Yii::t('user', 'Роль'), '2' =>  Yii::t('user', 'Допуск')];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
         return [
-            ['type', 'default', 'value' => 1],
-            [['name', 'type', 'description'], 'required'],
-            ['name', 'match', 'pattern' => '/^[a-zA-Z0-9_-]+$/','message' => Yii::t('user', 'Допустимы только латинские буквы и цифры.')],
-            [['name', 'description'], 'unique'],
-            [['type', 'created_at', 'updated_at'], 'integer'],
-            [['description', 'data'], 'string'],
-            [['name', 'rule_name'], 'string', 'max' => 64],
-            [['description', 'rule_name', 'data',
-                'created_at', 'updated_at'], 'default', 'value' => null],
-            [['name', 'description'], 'filter', 'filter' => 'trim'],
-            [['rule_name'], 'exist', 'skipOnError' => true, 'targetClass' => AuthRule::className(), 'targetAttribute' => ['rule_name' => 'name']],
-            [['children_array', 'user_array'], 'safe'],
+            '1' => Yii::t('user', 'Роль'),
+            '2' =>  Yii::t('user', 'Допуск')
         ];
     }
 
     /**
-     * @inheritdoc
+     * Правила валидации
+     * @return array
+     */
+    public function rules()
+    {
+        return [
+            [['name', 'type', 'description'], 'required'],  // Обязательны для заполнения
+            ['name', 'match', 'pattern' => '/^[a-zA-Z0-9_-]+$/','message' => Yii::t('user', 'Допустимы только латинские буквы и цифры.')], // Латинские буквы и цифры
+            [['name', 'description'], 'unique'],    // Уникальные значения
+            [['type', 'created_at', 'updated_at'], 'integer'],  // Целочисленные значения
+            [['description', 'data'], 'string'],    // Строковые значения
+            [['name', 'rule_name'], 'string', 'max' => 64], // Строковые значения (максимум 64 символов)
+            [['rule_name'], 'exist', 'skipOnError' => true, 'targetClass' => AuthRule::className(), 'targetAttribute' => ['rule_name' => 'name']],
+            [['children_array', 'user_array'], 'safe'], // Безопасные аттрибуты
+            [['name', 'description'], 'filter', 'filter' => 'trim'],    // Обрезаем строки по краям
+            [['description', 'rule_name', 'data',
+                'created_at', 'updated_at'], 'default', 'value' => null],   // По умолучанию = null
+            ['type', 'default', 'value' => self::TYPE_ROLE], // По умолчанию тип записи "Роль"
+        ];
+    }
+
+    /**
+     * Наименование полей аттрибутов
+     * @return array
      */
     public function attributeLabels()
     {
@@ -103,6 +115,7 @@ class AuthItem extends \yii\db\ActiveRecord
     }
 
     /**
+     * Связь название роли => пользователь
      * @return \yii\db\ActiveQuery
      */
     public function getAuthAssignments()
@@ -111,7 +124,8 @@ class AuthItem extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * Пользователи, обладающие текущей ролью или допуском
+     * @return $this
      */
     public function getUsers()
     {
@@ -119,6 +133,7 @@ class AuthItem extends \yii\db\ActiveRecord
     }
 
     /**
+     * Правило, которому принадлежит допуск
      * @return \yii\db\ActiveQuery
      */
     public function getRuleName()
@@ -127,6 +142,7 @@ class AuthItem extends \yii\db\ActiveRecord
     }
 
     /**
+     * Дочерние роли или допуски по связи child
      * @return \yii\db\ActiveQuery
      */
     public function getAuthItemChildren()
@@ -135,6 +151,7 @@ class AuthItem extends \yii\db\ActiveRecord
     }
 
     /**
+     * Дочерние роли или допуски по связи parent
      * @return \yii\db\ActiveQuery
      */
     public function getAuthItemChildren0()
@@ -143,7 +160,8 @@ class AuthItem extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * Родительские роли или допуски
+     * @return $this
      */
     public function getParents()
     {
@@ -151,6 +169,7 @@ class AuthItem extends \yii\db\ActiveRecord
     }
 
     /**
+     * Дочерние роли или допуски
      * @return \yii\db\ActiveQuery
      */
     public function getChildren()
@@ -159,44 +178,52 @@ class AuthItem extends \yii\db\ActiveRecord
     }
 
     /**
-     * Заполняет массив детей
-     * @return int
+     * Заполнение массива дочерних ролей и допусков
+     * Заполнение массива пользователей, обладающих ролью или допуском
+     *
+     * Выполняется, как правило, при инциализации модели
      */
     public function fill()
     {
+        // Дочерние роли и допуски
         if ($this->children) {
             foreach ($this->children as $child) {
                 $this->children_array[$child->name] = $child->description;
             }
         }
+        // Пользователи
         if ($this->users) {
             foreach ($this->users as $user) {
-                $name = ($user->last_name) ? $user->first_name ." ".$user->last_name." (".$user->id.")" : $user->first_name . " (".$user->id.")";
+                $name = ($user->last_name) ? $user->first_name ." ".$user->last_name : $user->first_name;
+                $name .= " (" . $user->id . ")"; // добавляем ID к надписи
                 $this->user_array[$user->id] = $name;
             }
         }
     }
 
     /**
-     * Список всех прав и ролей массивом
-     * @param array $type
+     * Список всех допусков и ролей массивом
+     * @param array $type - тип записи (1 - роль, 2 - допуск) по умолчанию оба
      * @return array
      */
     public static function getAll($type = [1,2])
     {
-        $auth = [];
+        $auths = [];
         $model = self::find()
             ->where(['type' => $type])
             ->all();
         if ($model) {
             foreach ($model as $m) {
-                $auth[$m->name] = $m->description;
+                $auths[$m->name] = $m->description;
             }
         }
-        return $auth;
+        return $auths;
     }
 
     /**
+     * Записываем роли, допуски и их связи в
+     * соотествующие таблицы после сохранения
+     *
      * @param bool $insert
      * @param array $changedAttributes
      * @return bool
@@ -204,7 +231,9 @@ class AuthItem extends \yii\db\ActiveRecord
     public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);
+        // Удаляем сначала прошлые связи с другими ролями и допусками
         AuthItemChild::deleteAll(['parent' => $this->name]);
+        // Сохраняем новые связи
         if ($this->children_array) {
             foreach ($this->children_array as $child) {
                 $authItemChild = new AuthItemChild();
@@ -213,7 +242,9 @@ class AuthItem extends \yii\db\ActiveRecord
                 $authItemChild->save();
             }
         }
+        // Удаляем сначала прошлые связи с пользователями
         AuthAssignment::deleteAll(['item_name' => $this->name]);
+        // Сохраняем новые связи
         if ($this->user_array) {
             foreach ($this->user_array as $user) {
                 $authAssignment = new AuthAssignment();
@@ -222,6 +253,5 @@ class AuthItem extends \yii\db\ActiveRecord
                 $authAssignment->save();
             }
         }
-        return true;
     }
 }
