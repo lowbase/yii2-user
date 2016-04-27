@@ -43,7 +43,7 @@ class Facebook extends \yii\authclient\clients\Facebook
     }
 
     /**
-     * Инициализация аттрибутов
+     * Получение аттрибутов
      * @return array
      * @throws \yii\base\Exception
      */
