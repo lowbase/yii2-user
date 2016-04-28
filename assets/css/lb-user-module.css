@@ -25,6 +25,10 @@
     display: none;
 }
 
+.auth-clients {
+    overflow: visible !important;
+}
+
 .lb-user-module-login-widget {
     width: 400px;
 }
