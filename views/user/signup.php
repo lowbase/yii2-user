@@ -7,9 +7,11 @@ use yii\helpers\Html;
 use lowbase\user\components\AuthChoice;
 use yii\captcha\Captcha;
 use yii\widgets\ActiveForm;
+use lowbase\user\UserAsset;
 
 $this->title = Yii::t('user', 'Регистрация');
 $this->params['breadcrumbs'][] = $this->title;
+UserAsset::register($this);
 ?>
 
 <div class="site-signup row">
