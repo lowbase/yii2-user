@@ -11,11 +11,13 @@
 use yii\helpers\Html;
 use lowbase\user\components\AuthChoice;
 use yii\widgets\ActiveForm;
+use lowbase\user\UserAsset;
 
 $this->title = Yii::t('user', 'Вход на сайт');
 $this->params['breadcrumbs'][] = $this->title;
-
+UserAsset::register($this);
 ?>
+
 <div class="site-login row" id="filter">
 
     <?= $this->render(Yii::$app->controller->module->getCustomView('repass', '_pass'), ['model' => $forget]); ?>
