@@ -116,7 +116,7 @@ php composer.phar require --prefer-dist lowbase/yii2-user "*"
    'showScriptName' => false,
    'rules' => [
        //Взаимодействия с пользователем на сайте
-       '<action:(login|signup|confirm|reset|profile|remove|online)>' => 'user/user/<action>',
+       '<action:(login|logout|signup|confirm|reset|profile|remove|online)>' => 'user/user/<action>',
        //Взаимодействия с пользователем в панели админстрирования
        'admin/user/<action:(index|update|delete|view|rmv|multidelete|multiactive|multiblock)>' => 'user/user/<action>',
        //Авторизация через социальные сети
