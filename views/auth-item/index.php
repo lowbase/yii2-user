@@ -23,11 +23,6 @@ $assets = UserAsset::register($this);
 ?>
 <div class="auth-item-index">
 
-    <div class="row">
-        <div class="col-lg-12">
-            <?= $this->render(Yii::$app->controller->module->getCustomView('alert', '../default/alert'));?>
-        </div>
-    </div>
     <?php
     $gridColumns = [
         [
