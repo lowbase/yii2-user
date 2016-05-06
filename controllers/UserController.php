@@ -99,9 +99,15 @@ class UserController extends Controller
             return $this->goBack(['signup']);
         }
 
-        return $this->render($this->module->getCustomView('signup', '@vendor/lowbase/yii2-user/views/user/signup'), [
-            'model' => $model,
-        ]);
+        if (method_exists($this->module, 'getCustomView')) {
+            return $this->render($this->module->getCustomView('signup', '@vendor/lowbase/yii2-user/views/user/signup'), [
+                'model' => $model,
+            ]);
+        } else {
+            return $this->render('@vendor/lowbase/yii2-user/views/user/signup', [
+                'model' => $model,
+            ]);
+        }
     }
 
     /**
@@ -128,11 +134,18 @@ class UserController extends Controller
             }
             return $this->goBack(['login']);
         }
-
-        return $this->render($this->module->getCustomView('login', '@vendor/lowbase/yii2-user/views/user/login'), [
-            'model' => $model,
-            'forget' => $forget
-        ]);
+        
+        if (method_exists($this->module, 'getCustomView')) {
+            return $this->render($this->module->getCustomView('login', '@vendor/lowbase/yii2-user/views/user/login'), [
+                'model' => $model,
+                'forget' => $forget
+            ]);
+        } else {
+            return $this->render('@vendor/lowbase/yii2-user/views/user/login', [
+                'model' => $model,
+                'forget' => $forget
+            ]);
+        }
     }
 
     /**
@@ -214,10 +227,16 @@ class UserController extends Controller
                 return $this->redirect(['profile']);
             }
         }
-        return $this->render($this->module->getCustomView('profile', '@vendor/lowbase/yii2-user/views/user/profile'), [
-            'model' => $model,
-        ]);
-
+        
+        if (method_exists($this->module, 'getCustomView')) {
+            return $this->render($this->module->getCustomView('profile', '@vendor/lowbase/yii2-user/views/user/profile'), [
+                'model' => $model,
+            ]);
+        } else {
+            return $this->render('@vendor/lowbase/yii2-user/views/user/profile', [
+                'model' => $model,
+            ]);
+        }
     }
 
     /**
@@ -232,8 +251,15 @@ class UserController extends Controller
     {
         $model = $this->findModel($id);
 
-        return $this->render($this->module->getCustomView('show', '@vendor/lowbase/yii2-user/views/user/show'), [
-            'model' => $model]);
+        if (method_exists($this->module, 'getCustomView')) {
+            return $this->render($this->module->getCustomView('show', '@vendor/lowbase/yii2-user/views/user/show'), [
+                'model' => $model,
+            ]);
+        } else {
+            return $this->render('@vendor/lowbase/yii2-user/views/user/show', [
+                'model' => $model,
+            ]);
+        }
     }
 
     /**
