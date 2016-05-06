@@ -17,8 +17,6 @@ Modal::begin([
     'id' => 'pass'
 ]);
 
-echo $this->render(Yii::$app->controller->module->getCustomView('alert', '../default/alert'));
-
     $form = ActiveForm::begin([
         'id' => 'pass-form',
         'fieldConfig' => [
