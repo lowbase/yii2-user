@@ -40,7 +40,6 @@ class Module extends \yii\base\Module
      * signup - регистрация
      * login - авторизация
      * profile - профиль
-     * alert - сообщения
      * repass - восстановление пароля
      * show - просмотр пользователя
      *
