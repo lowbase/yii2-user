@@ -30,7 +30,6 @@ $this->params['breadcrumbs'][] = Yii::t('user', 'Редактирование');
 
     <div class="row">
         <div class="col-lg-12">
-            <?=$this->render(Yii::$app->controller->module->getCustomView('alert', '../default/alert'));?>
             <h1><?= Html::encode($this->title) ?></h1>
         </div>
     </div>
