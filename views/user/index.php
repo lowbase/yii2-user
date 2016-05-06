@@ -23,11 +23,6 @@ UserAsset::register($this);
 ?>
 
 <div class="user-index">
-    <div class="row">
-        <div class="col-lg-12">
-            <?= $this->render(Yii::$app->controller->module->getCustomView('alert', '../default/alert'));?>
-        </div>
-    </div>
 
     <?= $this->render('_search', ['model' => $searchModel]);?>
 
