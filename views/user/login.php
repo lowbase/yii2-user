@@ -20,17 +20,17 @@ UserAsset::register($this);
 
 <div class="site-login row" id="filter">
 
-        <?php
-            if (method_exists($this->module, 'getCustomView')) {
-                echo $this->render($this->module->getCustomView('repass', '_pass'), [
-                    'model' => $forget,
-                ]);
-            } else {
-                echo $this->render('_pass', [
-                    'model' => $forget,
-                ]);
-            }
-        ?>
+    <?php
+        if (method_exists(\Yii::$app->controller->module, 'getCustomView')) {
+            echo $this->render(\Yii::$app->controller->module->getCustomView('repass', '_pass'), [
+                'model' => $forget,
+            ]);
+        } else {
+            echo $this->render('_pass', [
+                'model' => $forget,
+            ]);
+        }
+    ?>
     
     <div class="col-lg-6">
 
