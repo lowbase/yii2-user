@@ -32,7 +32,7 @@ class SignupForm extends User
             ['email', 'unique', 'targetClass' => self::className(),
                 'message' => Yii::t('user', 'Данный Email уже зарегистрирован.')],  // Электронная почта должна быть уникальна
             ['email', 'email'], // Электронная почта
-            ['captcha', 'captcha', 'captchaAction' => (isset(Yii::$app->params['captchaAction'])) ? Yii::$app->params['captchaAction'] : 'lowbase-user/default/captcha'], // Проверка капчи
+            ['captcha', 'captcha', 'captchaAction' => 'lowbase-user/default/captcha', // Проверка капчи
             [['password'], 'string', 'min' => 4],   // Пароль минимум 4 символа
             [['sex', 'country_id', 'city_id', 'status'], 'integer'],    // Целочисленные значения
             [['birthday', 'login_at'], 'safe'], // Безопасные аттрибуты
