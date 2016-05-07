@@ -16,9 +16,6 @@ UserAsset::register($this);
 
 <div class="site-signup row">
 
-        <div class="col-lg-12">
-            <?=$this->render(Yii::$app->controller->module->getCustomView('alert', '../default/alert'));?>
-        </div>
         <div class="col-lg-6">
 
             <h1><?= Html::encode($this->title) ?></h1>
