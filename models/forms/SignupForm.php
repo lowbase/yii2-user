@@ -88,7 +88,11 @@ class SignupForm extends User
     public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);
-        Yii::$app->mailer->compose(\Yii::$app->controller->module->getCustomMailView('confirmEmail', 'confirmEmail'), ['model' => $this])
+        $view = 'confirmEmail';
+        if (method_exists($this->module, 'getCustomMailView')) {
+           $view = \Yii::$app->controller->module->getCustomMailView('confirmEmail', 'confirmEmail');
+        }
+        Yii::$app->mailer->compose($view, ['model' => $this])
             ->setFrom([Yii::$app->params['adminEmail']])
             ->setTo($this->email)
             ->setSubject(Yii::t('user', 'Подтверждение регистрации на сайте'))
