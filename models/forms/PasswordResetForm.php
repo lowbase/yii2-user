@@ -36,7 +36,7 @@ class PasswordResetForm extends Model
                 'targetClass' => '\lowbase\user\models\User',
                 'message' => \Yii::t('user', 'Пользователь с таким Email не зарегистрирован.')
             ],  // Значение электронной почты должно присутствовать в базе данных
-            ['captcha', 'captcha', 'captchaAction' => '/lowbase-user/default/captcha'], // Проверка капчи
+            ['captcha', 'captcha', 'captchaAction' => (isset(Yii::$app->params['captchaAction'])) ? Yii::$app->params['captchaAction'] : 'lowbase-user/default/captcha'], // Проверка капчи
         ];
     }
 
@@ -69,7 +69,7 @@ class PasswordResetForm extends Model
             }
             if ($user->save()) {
                 // Отправка по шаблону письма "passwordResetToken"
-                $view = '@vendor/lowbase/user/mail/passwordResetToken';
+                $view = '@lowbase/user/mail/passwordResetToken';
                 if (method_exists(\Yii::$app->controller->module, 'getCustomMailView')) {
                    $view = \Yii::$app->controller->module->getCustomMailView('passwordResetToken', $view);
                 }
