@@ -10,6 +10,7 @@ use yii\bootstrap\Modal;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
+use yii\helpers\Url;
 
 Modal::begin([
     'header' => '<h1 class="text-center">' . Yii::t('user', 'Восстановление пароля') . '</h1>',
@@ -35,7 +36,7 @@ Modal::begin([
     ]);
 
     echo $form->field($model, 'captcha')->widget(Captcha::className(), [
-        'captchaAction' => '/user/default/captcha',
+        'captchaAction' => (isset(Yii::$app->params['captchaAction'])) ? Yii::$app->params['captchaAction'] : 'lowbase-user/default/captcha',
         'options' => [
             'class' => 'form-control',
             'placeholder' => $model->getAttributeLabel('captcha')
