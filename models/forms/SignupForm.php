@@ -32,7 +32,7 @@ class SignupForm extends User
             ['email', 'unique', 'targetClass' => self::className(),
                 'message' => Yii::t('user', 'Данный Email уже зарегистрирован.')],  // Электронная почта должна быть уникальна
             ['email', 'email'], // Электронная почта
-            ['captcha', 'captcha', 'captchaAction' => '/user/default/captcha'], // Проверка капчи
+            ['captcha', 'captcha', 'captchaAction' => '/lowbase-user/default/captcha'], // Проверка капчи
             [['password'], 'string', 'min' => 4],   // Пароль минимум 4 символа
             [['sex', 'country_id', 'city_id', 'status'], 'integer'],    // Целочисленные значения
             [['birthday', 'login_at'], 'safe'], // Безопасные аттрибуты
@@ -88,9 +88,9 @@ class SignupForm extends User
     public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);
-        $view = 'confirmEmail';
-        if (method_exists($this->module, 'getCustomMailView')) {
-           $view = \Yii::$app->controller->module->getCustomMailView('confirmEmail', 'confirmEmail');
+        $view = '@vendor/lowbase/user/mail/confirmEmail';
+        if (method_exists(\Yii::$app->controller->module, 'getCustomMailView')) {
+           $view = \Yii::$app->controller->module->getCustomMailView('confirmEmail', $view);
         }
         Yii::$app->mailer->compose($view, ['model' => $this])
             ->setFrom([Yii::$app->params['adminEmail']])
