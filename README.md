@@ -116,23 +116,23 @@ php composer.phar require --prefer-dist lowbase/yii2-user "*"
    'showScriptName' => false,
    'rules' => [
        //Взаимодействия с пользователем на сайте
-       '<action:(login|logout|signup|confirm|reset|profile|remove|online)>' => 'user/user/<action>',
+       '<action:(login|logout|signup|confirm|reset|profile|remove|online)>' => 'lowbase-user/user/<action>',
        //Взаимодействия с пользователем в панели админстрирования
-       'admin/user/<action:(index|update|delete|view|rmv|multidelete|multiactive|multiblock)>' => 'user/user/<action>',
+       'admin/user/<action:(index|update|delete|view|rmv|multidelete|multiactive|multiblock)>' => 'lowbase-user/user/<action>',
        //Авторизация через социальные сети
-       'auth/<authclient:[\w\-]+>' => 'user/auth/index',
+       'auth/<authclient:[\w\-]+>' => 'lowbase-user/auth/index',
        //Просмотр пользователя
-       'user/<id:\d+>' => 'user/user/show',
+       'user/<id:\d+>' => 'lowbase-user/user/show',
        //Взаимодействия со странами в панели админстрирования
-       'admin/country/<action:(index|create|update|delete|view|multidelete)>' => 'user/country/<action>',
+       'admin/country/<action:(index|create|update|delete|view|multidelete)>' => 'lowbase-user/country/<action>',
        //Поиск населенного пункта (города)
-       'city/find' => 'user/city/find',
+       'city/find' => 'lowbase-user/city/find',
        //Взаимодействия с городами в панели администрирования
-       'admin/city/<action:(index|create|update|delete|view|multidelete)>' => 'user/city/<action>',
+       'admin/city/<action:(index|create|update|delete|view|multidelete)>' => 'lowbase-user/city/<action>',
        //Работа с ролями и разделением прав доступа
-       'admin/role/<action:(index|create|update|delete|view|multidelete)>' => 'user/auth-item/<action>',
+       'admin/role/<action:(index|create|update|delete|view|multidelete)>' => 'lowbase-user/auth-item/<action>',
        //Работа с правилами контроля доступа
-       'admin/rule/<action:(index|create|update|delete|view|multidelete)>' => 'user/auth-rule/<action>',
+       'admin/rule/<action:(index|create|update|delete|view|multidelete)>' => 'lowbase-user/auth-rule/<action>',
    ],
 ],
 
@@ -144,11 +144,14 @@ php composer.phar require --prefer-dist lowbase/yii2-user "*"
    'gridview' =>  [
        'class' => '\kartik\grid\Module'
    ],
-   'user' => [
+   'lowbase-user' => [
        'class' => '\lowbase\user\Module',
    ],
 ],
 ```
+!!! Рекомендуем не изменять название модуля lowbase-user. В противном случае для работоспособности капчи и авторизации через соц. сети
+необходимо поменять `captchaAction` и `baseAuthUrl` соответственно. Т.к. модели и контроллеры модуля могут быть унаследованы в приложении (для кастомизации) и необходимо в этом случае переназначать текущие параметры в коде.
+
 Создание таблиц БД
 ------------------
 Запускаем миграции командой:
