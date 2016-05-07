@@ -69,7 +69,11 @@ class PasswordResetForm extends Model
             }
             if ($user->save()) {
                 // Отправка по шаблону письма "passwordResetToken"
-                return \Yii::$app->mailer->compose(\Yii::$app->controller->module->getCustomMailView('passwordResetToken', 'passwordResetToken'), [
+                $view = 'passwordResetToken';
+                if (method_exists($this->module, 'getCustomMailView')) {
+                   $view = \Yii::$app->controller->module->getCustomMailView('passwordResetToken', 'passwordResetToken');
+                }
+                return \Yii::$app->mailer->compose($view, [
                     'model' => $user,
                     'password' => $this->password
                 ])
