@@ -20,6 +20,8 @@ class Module extends \yii\base\Module
     public $customViews = [];
     //Массив с собственными шаблонами писем
     public $customMailViews = [];
+    //Action для капчи
+    public $captchaAction = '/user/default/captcha';
 
     public $userPhotoPath = 'attach/user/images';
 
