@@ -73,7 +73,7 @@ UserAsset::register($this);
 
             <div class="text-center" style="text-align: center">
                 <?= AuthChoice::widget([
-                    'baseAuthUrl' => ['/user/auth/index'],
+                    'baseAuthUrl' => ['/lowbase-user/auth/index'],
                 ]) ?>
             </div>
 
