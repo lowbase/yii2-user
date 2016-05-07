@@ -36,7 +36,7 @@ class PasswordResetForm extends Model
                 'targetClass' => '\lowbase\user\models\User',
                 'message' => \Yii::t('user', 'Пользователь с таким Email не зарегистрирован.')
             ],  // Значение электронной почты должно присутствовать в базе данных
-            ['captcha', 'captcha', 'captchaAction' => 'lowbase-user/default/captcha', // Проверка капчи
+            ['captcha', 'captcha', 'captchaAction' => 'lowbase-user/default/captcha'], // Проверка капчи
         ];
     }
 
