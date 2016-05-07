@@ -49,7 +49,7 @@ UserAsset::register($this);
 
             <?php
             echo $form->field($model, 'captcha')->widget(Captcha::className(), [
-                'captchaAction' => '/user/default/captcha',
+                'captchaAction' => (isset(Yii::$app->params['captchaAction'])) ? Yii::$app->params['captchaAction'] : 'lowbase-user/default/captcha',
                 'options' => [
                     'class' => 'form-control',
                     'placeholder' => $model->getAttributeLabel('captcha')
