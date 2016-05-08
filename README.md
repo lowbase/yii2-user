@@ -214,8 +214,8 @@ dump_city.sql
 <?= OnlineWidget::widget(['time' => 300]) ?>
 
 // Виджет авторизации через социальные сети
-<?= AuthChoice::widget([['baseAuthUrl' => ['/user/auth/index']]]) ?>
+<?= AuthChoice::widget([['baseAuthUrl' => ['/lowbase-user/auth/index']]]) ?>
 
 // Виджет привязки социальных сетей к профилю
- <?= AuthKeysManager::widget(['baseAuthUrl' => ['/user/auth/index']]) ?>
+ <?= AuthKeysManager::widget(['baseAuthUrl' => ['/lowbase-user/auth/index']]) ?>
 ```
