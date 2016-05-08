@@ -18,6 +18,9 @@ Modal::begin([
     'id' => 'pass'
 ]);
 
+if (Yii::$app->session->hasFlash('reset-success')) {
+    echo "<div class='text-center'>" . Yii::$app->session->getFlash('reset-success') . "</div>";
+} else {
     $form = ActiveForm::begin([
         'id' => 'pass-form',
         'fieldConfig' => [
@@ -49,11 +52,11 @@ Modal::begin([
     ?>
 
     <p class="hint-block">
-        <?= Yii::t('user', 'Ссылка с активацией нового пароля будет отправлена на Email, указанный при регистрации')?>.
+        <?= Yii::t('user', 'Ссылка с активацией нового пароля будет отправлена на Email, указанный при регистрации') ?>.
     </p>
 
     <div class="form-group text-center">
-        <?= Html::submitButton('<i class="glyphicon glyphicon-refresh"></i> '.Yii::t('user', 'Сбросить пароль'), [
+        <?= Html::submitButton('<i class="glyphicon glyphicon-refresh"></i> ' . Yii::t('user', 'Сбросить пароль'), [
             'class' => 'text-center btn btn-lg btn-primary',
             'name' => 'pass-button'
         ]);
@@ -62,8 +65,9 @@ Modal::begin([
 
 <?php
     ActiveForm::end();
+}
 Modal::end();
 
-if (Yii::$app->session->hasFlash('success')|| $model->hasErrors()) {
+if (Yii::$app->session->hasFlash('reset-success')|| $model->hasErrors()) {
     $this->registerJs('$("#pass").modal("show")');
 }
