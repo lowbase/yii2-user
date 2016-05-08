@@ -138,7 +138,7 @@ $assets = UserAsset::register($this);
 
         <div class="lb-user-module-profile-keys">
             <?= AuthKeysManager::widget([
-                'baseAuthUrl' => ['/user/auth/index'],
+                'baseAuthUrl' => ['/lowbase-user/auth/index'],
             ]) ?>
         </div>
 
