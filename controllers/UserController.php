@@ -95,7 +95,7 @@ class UserController extends Controller
 
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->getSession()->setFlash('success', Yii::t('user', 'Ссылка с подтверждением регистрации отправлена на Email.'));
+            Yii::$app->getSession()->setFlash('signup-success', Yii::t('user', 'Ссылка с подтверждением регистрации отправлена на Email.'));
             return $this->goBack(['signup']);
         }
 
