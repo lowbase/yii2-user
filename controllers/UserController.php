@@ -130,7 +130,7 @@ class UserController extends Controller
         $forget = new PasswordResetForm();
         if ($forget->load(Yii::$app->request->post()) && $forget->validate()) {
             if ($forget->sendEmail()) { // Отправлено подтверждение по Email
-                Yii::$app->getSession()->setFlash('success', Yii::t('user', 'Ссылка с активацией нового пароля отправлена на Email.'));
+                Yii::$app->getSession()->setFlash('reset-success', Yii::t('user', 'Ссылка с активацией нового пароля отправлена на Email.'));
             }
             return $this->goBack(['login']);
         }
