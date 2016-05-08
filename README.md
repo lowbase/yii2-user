@@ -207,6 +207,11 @@ dump_city.sql
 Запуск виджетов
 ---------------
 ```
+use lowbase\user\components\LoginWidget;
+use lowbase\user\components\OnlineWidget;
+use lowbase\user\components\AuthKeysManager;
+use lowbase\user\components\AuthChoice;
+
 // Виджет авторизации (с отключеными иконками соц. сетей)
 <?= LoginWidget::widget(['oauth' => false]) ?>
 
